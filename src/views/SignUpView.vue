@@ -43,7 +43,6 @@
 }
 
 body{
-/*   background-color: #282A36; */
   display: flex;
   justify-content: center;
   align-items: center;
