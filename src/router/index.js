@@ -15,15 +15,22 @@ const routes = [
     // this generates a separate chunk (todo.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "todo" */ '../views/TodoView.vue')
-  }
-  ,
+  },
   {
     path: '/signup',
     name: 'signup',
     // route level code-splitting
-    // this generates a separate chunk (todo.[hash].js) for this route
+    // this generates a separate chunk (signup.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "todo" */ '../views/SignUpView.vue')
+    component: () => import(/* webpackChunkName: "signup" */ '../views/SignUpView.vue')
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    // route level code-splitting
+    // this generates a separate chunk (profile.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "profile" */ '../views/ProfileView.vue')
   },
 
 ]

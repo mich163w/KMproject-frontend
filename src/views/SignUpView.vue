@@ -46,6 +46,7 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .card{
@@ -62,6 +63,7 @@ body{
 
 .card h2{
   margin-bottom: 10px;
+  color: #7a7a88;
 }
 
 .card a.fp{

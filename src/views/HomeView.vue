@@ -49,7 +49,7 @@
   }
   
   body{
-  
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -69,6 +69,7 @@
   
   .card h2{
     margin-bottom: 10px;
+    color: #7a7a88;
   }
   
   .card a.fp{

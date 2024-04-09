@@ -11,6 +11,7 @@
     <nav>
       <router-link to="/">Home</router-link> 
       <router-link to="/todo">Todo</router-link>
+      <router-link to="/profile"></router-link>
     </nav>
     <router-view />
   </div>

@@ -7,7 +7,9 @@
     
     <h1><i class="fab fa-trello logo-icon" aria-hidden="true"></i>To Do Board 💫</h1>
     <div class="menubar">
-      <img class="image" src="../assets/donut_02.jpg" alt="Placeholder Image">  
+      <a href="./profile">
+      <img class="image" src="../assets/donut_02.jpg" alt="Placeholder Image"> </a>
+
             <div class="user-info">
             
                 <h2>Lists</h2>
