@@ -5,7 +5,9 @@
 <template>
 
 
-  <div>
+  <div style="
+    display: flex;
+">
     <nav>
       <router-link to="/">Home</router-link> 
       <router-link to="/todo">Todo</router-link>
@@ -18,7 +20,7 @@
 <style scoped>
 
 nav {
-  display: flex;
+  display: none;
   justify-content: space-around;
  color: white;
 }
