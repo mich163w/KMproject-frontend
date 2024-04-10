@@ -44,7 +44,7 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #3d3e53;
 }
 button:focus,
 button:focus-visible {
@@ -61,5 +61,20 @@ button:focus-visible {
 }
 
 
+/* ----- Home view ----- */
 
 
+
+/* ----- Profile view ----- */
+
+
+
+/* ----- Signup view ----- */
+
+
+
+/* ----- Todo view ----- */
+
+
+
+/* ----- Board view ----- */
