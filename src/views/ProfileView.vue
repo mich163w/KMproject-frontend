@@ -1,157 +1,102 @@
 <template>
- <body>
+    <div style="display: flex; flex-direction: column; width: 100%;">
+        <!-- Topbar med billede -->
+        <div class="topbar">
+            <img src="../assets/space.jpg" alt="Topbar background image" class="topbar-bg">
 
-    <div class="navbar-top">
-        <div class="title">
-            <h1>Profile</h1>
         </div>
-<>
+        <!-- Slut på topbar -->
+
+        <!-- Sidenav -->
+        <div class="sidenav">
+            <div class="profile">
+                <img src="../assets/donut_02.jpg" alt="Profile Picture" width="100" height="100">
+                <div class="name">Brugernavn</div>
+                <div class="email">email@email.com</div>
+                <div class="sidenav-url">
+                    <div class="url">
+                        <a href="#profile" class="active">Profil</a>
+                    </div>
+                    <div class="url">
+                        <a href="#settings">Indstillinger</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Slut på Sidenav -->
+
+        <!-- Main Content -->
+        <div class="main">
+            <h2>Information</h2>
+            <div class="card">
+                <div class="card-body">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" placeholder="name">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="email">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="username">
+                    <label for="password">Password</label>
+                    <input type="password" id="Password" placeholder="password">
+                </div>
+            </div>
+        </div>
+        <!-- Slut på Main Content -->
     </div>
-    <!-- End -->
-
-    <!-- Sidenav -->
-    <div class="sidenav">
-        <div class="profile">
-            <img src="../assets/donut_02.jpg" alt="" width="100" height="100">
-
-            <div class="name">
-                username
-            </div>
-            <div class="email">
-                email@email.com
-            </div>
-            <div class="sidenav-url">
-            <div class="url">
-                <a href="#profile" class="active">Profile</a>
-             
-            </div>
-            <div class="url">
-                <a href="#settings">Settings</a>
-   
-            </div>
-        </div>
-        </div>
-
-     
-    </div>
-    <!-- End -->
-
-    <!-- Main -->
-    <div class="main">
-        <h2>Information</h2>
-        <div class="card">
-            <div class="card-body">
-                <i class="fa fa-pen fa-xs edit"></i>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Name</td>
-                            <td>:</td>
-                            <td>ImDezCode</td>
-                        </tr>
-                        <tr>
-                            <td>Email</td>
-                            <td>:</td>
-                            <td>imdezcode@gmail.com</td>
-                        </tr>
-                        <tr>
-                            <td>Address</td>
-                            <td>:</td>
-                            <td>Bali, Indonesia</td>
-                        </tr>
-                        <tr>
-                            <td>Hobbies</td>
-                            <td>:</td>
-                            <td>Diving, Reading Book</td>
-                        </tr>
-                        <tr>
-                            <td>Job</td>
-                            <td>:</td>
-                            <td>Web Developer</td>
-                        </tr>
-                        <tr>
-                            <td>Skill</td>
-                            <td>:</td>
-                            <td>PHP, HTML, CSS, Java</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-    </div>
-
-</body>
 </template>
 
 <script></script>
 
 <style scoped>
+/* Globale stilarter */
 body {
-
-    font-family: Arial;
-    overflow: hidden;
-    width: 100%;
-}
-
-/* NavbarTop */
-.navbar-top {
-    background-color: #ffffff0a;
-    color: #e0e0e0;
-    box-shadow: 0px 4px 8px 0px grey;
-    height: 100%;
-}
-
-
-
-.navbar-top ul {
-    float: right;
-    list-style-type: none;
     margin: 0;
-    overflow: hidden;
-    padding: 18px 50px 0 40px;
+    padding: 0;
+    font-family: Arial, sans-serif;
 }
 
-.navbar-top ul li {
-    float: left;
-}
-
-.navbar-top ul li a {
-    color: #d3d3d3;
-    padding: 14px 16px;
-    text-align: center;
-    text-decoration: none;
-}
-
-.icon-count {
-    background-color: #ff0000;
-    color: #fff;
-    float: right;
-    font-size: 11px;
-    left: -25px;
-    padding: 2px;
+/* Topbar med billede */
+.topbar {
     position: relative;
+    height: 200px;
+    /* Juster højden efter dit billede */
+    flex-direction: column;
+    display: flex;
 }
 
-/* End */
+.topbar-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.topbar-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+}
+
+.topbar-content h1 {
+    margin: 0;
+}
 
 /* Sidenav */
 .sidenav {
 
-    color: #bebebe;
-    border-bottom-right-radius: 25px;
-    height: 86%;
+    width: 250px;
+    height: 100vh;
+    /* Fyld hele højden af skærmen */
+    position: fixed;
+    top: 0;
     left: 0;
-    overflow-x: hidden;
-    padding-top: 20px;
-    position: absolute;
-    top: 70px;
- 
+    padding-top: 50px;
+    /* Juster topafstand efter topbarhøjden */
 }
 
 .profile {
-    margin-bottom: 20px;
-    margin-top: -12px;
     text-align: center;
 }
 
@@ -160,82 +105,71 @@ body {
     box-shadow: 0px 0px 5px 1px grey;
 }
 
-.name {
-    font-size: 20px;
-    font-weight: bold;
-    padding-top: 20px;
+.name,
+.email {
+    margin-top: 10px;
 }
 
-.job {
-    font-size: 16px;
-    font-weight: bold;
-    padding-top: 10px;
+.sidenav-url {
+    margin-top: 20px;
 }
 
-.url, hr {
-    text-align: center;
-}
-
-.url hr {
-    margin-left: 20%;
-    width: 60%;
-}
-
-.url a {
-    color: #818181;
-    display: block;
-    font-size: 20px;
-    margin: 10px 0;
-    padding: 6px 8px;
-    text-decoration: none;
-}
-
-.url a:hover, .url .active {
-    background-color: #e8f5ff;
-    border-radius: 28px;
-    color: #000;
-    margin-left: 14%;
-    width: 65%;
-}
-
-/* End */
-
-/* Main */
-.main {
-    margin-top: 2%;
-    margin-left: 29%;
-    font-size: 28px;
-    padding: 0 10px;
-    width: 58%;
-}
-
-.main h2 {
-    color: #333;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 24px;
+.url {
     margin-bottom: 10px;
 }
 
-.main .card {
-    background-color: #ffffff0a;
-    border-radius: 18px;
-    box-shadow: 1px 1px 8px 0 grey;
-    height: auto;
+.url a {
+    display: block;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    color: #afafaf;
+    border: 2px solid #afafaf;
+    border-radius: 15px;
+}
+
+.url a.active,
+.url a:hover {
+    color: #afafaf;
+    border: 2px solid #afafaf;
+    border-radius: 15px;
+    background-color: #c3c3c330;
+}
+
+label {
+    text-align: left;
+}
+
+/* Main Content */
+.main {
+    margin-left: 250px;
+    /* Bredde af sidenav */
+    padding: 20px;
+}
+
+.main h2 {
+    color: #c3c3c3;
+    font-size: 24px;
     margin-bottom: 20px;
-    padding: 20px 0 20px 50px;
 }
 
-.main .card table {
-    border: none;
-    font-size: 16px;
-    height: 270px;
-    width: 80%;
+.card {
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
 
-.edit {
-    position: absolute;
-    color: #e7e7e8;
-    right: 14%;
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+input {
+    border: 5px solid #72757e;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: none;
+    width: 60%;
+}
 </style>

@@ -1,40 +1,36 @@
 <template>
-<body>
 
-         <!-- FORMULAIRE DE CONNEXION -->
+  <body>
+
+    <!-- FORMULAIRE DE CONNEXION -->
     <div class="card">
-        <h2>Signup Form</h2>
+      <h2>Signup Form</h2>
 
-            <!-- SE CONNECTER / S'INSCRIRE -->
-        <div class="login_register">
-            <a href="
-/
-" class="login" target="blank">Login</a>
-            <a href="
-/signup
-" class="register" target="blank">Signup</a>
-        </div>
+      <!-- SE CONNECTER / S'INSCRIRE -->
+      <div class="login_register">
+        <a href="/" class="login" target="blank">Login</a>
+        <a href="/signup" class="register" target="blank">Signup</a>
+      </div>
 
-            <!-- FORMULAIRE -->
-        <form class="form">
-            <input type="email" placeholder="Email Adress" class="email">
-            <input type="password" placeholder="Password" class="pass">
-            <input type="password" placeholder="Confirm Password" class="confirm_pass">
-        </form>
+      <!-- FORMULAIRE -->
+      <form class="form">
+        <input type="email" placeholder="Email Adress" class="email">
+        <input type="password" placeholder="Password" class="pass">
+        <input type="password" placeholder="Confirm Password" class="confirm_pass">
+      </form>
 
-            <!-- MOT DE PASSE OUBLIE ? -->
-        <a href="#" class="fp">Forgot password?</a>
+      <!-- MOT DE PASSE OUBLIE ? -->
+      <a href="#" class="fp">Forgot password?</a>
 
-            <!-- BOUTTON LOGIN -->
-            <button type="submit" class="login_btn">Singup</button>
+      <!-- BOUTTON LOGIN -->
+      <button type="submit" class="login_btn">Singup</button>
     </div>
-        
-</body>
+
+  </body>
 
 </template>
 
 <style scoped>
-
 * {
   margin: 0;
   padding: 0;
@@ -42,37 +38,37 @@
   text-decoration: none;
 }
 
-body{
+body {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
 }
 
-.card{
-    width: auto;
-    height: auto;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    border-radius: 20px;
+.card {
+  width: auto;
+  height: auto;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 20px;
 }
 
-.card h2{
+.card h2 {
   margin-bottom: 10px;
   color: #7a7a88;
 }
 
-.card a.fp{
+.card a.fp {
   width: 100%;
   display: flex;
   color: #63676d;
 }
 
-.login_register{
+.login_register {
   display: flex;
   width: 100%;
   border: 1px solid rgba(221, 221, 221, 1);
@@ -80,32 +76,32 @@ body{
   margin: 20px 0;
 }
 
-.login_register a{
+.login_register a {
   font-size: 1em;
   padding: 10px 55px;
   border: none;
   width: 50%;
 }
 
-.login_register a.login{
+.login_register a.login {
   border-radius: 15px;
   background-color: transparent;
   color: black;
 }
 
-.login_register a.register{
+.login_register a.register {
   border-radius: 15px;
   background: linear-gradient(-90deg, #988f82, #bdb9b4);
   color: white;
 }
 
-.form{
+.form {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-.form input{
+.form input {
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #DDDDDD;
@@ -113,19 +109,19 @@ body{
   box-shadow: 1px 5px 9px rgba(211, 211, 211, .7);
 }
 
-.form input.email{
+.form input.email {
   margin-bottom: 15px;
 }
 
-.form input.pass{
+.form input.pass {
   margin-bottom: 15px;
 }
 
-.form input.comfirm_pass{
+.form input.comfirm_pass {
   margin-bottom: 5px;
 }
 
-.login_btn{
+.login_btn {
   font-size: 20px;
   color: white;
   border-radius: 15px;
