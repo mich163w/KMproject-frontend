@@ -1,0 +1,453 @@
+openapi: 3.0.0
+info:
+  title: PwaKM
+  description: MongoDB ExpressJS NodeJS REST API
+  version: 1.0.0
+servers:
+  - url: http://localhost:4000/api/
+    description: Localhost development server 
+  - url: https://smsj-men-restapi.herokuapp.com/api/
+    description: Heroku remote server
+components:
+  securitySchemes:
+    ApiKeyAuth:        
+      type: apiKey
+      in: header       
+      name: auth-token
+
+
+  schemas:
+    appointment:
+      type: object
+      properties:
+        appointmentName:
+          type: string
+    
+    shoppingItem:
+      type: object
+      properties:
+        shoppingItemName:
+          type: string
+
+    toDo:
+      type: object
+      properties:
+        toDoName:
+          type: string
+
+    
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        date:
+          type: string
+
+paths:
+
+  /user/register:
+    post:
+      tags:
+        - Register
+      summary: Register a new User
+      description: Register a new User in the database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+
+      responses:
+        201:
+          description: User created succesfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  _id:
+                    type: string
+
+  /user/login:
+    post:
+      tags:
+        - Login
+      summary: Login a User
+      description: Login a User in order to get JWT token (auth-token)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      
+      responses:
+        200:
+          description: User logged in succesfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  data:
+                    type: string
+
+  /appointment:
+    
+    get:
+      tags:
+        - Appointment Routes
+      summary: Retrieves a list of appointments
+      description: Retrieves a list of appointments as JSON objects.
+      responses:
+        200:
+          description: A list of product JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/appointment"
+
+
+    post:
+      tags:
+        - Appointment Routes
+      summary: Create a new appointment
+      description: Create a new appointment
+      security:
+        - ApiKeyAuth: []      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/appointment"
+
+      responses:
+        201:
+          description: Appointment created succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/appointment"
+  
+  /appointment/{id}:
+    get:
+      tags:
+        - Appointment Routes
+      summary: Specific appointment
+      description: Retrieves a specific appointment based on it id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      responses:
+        200:
+          description: An appointment in the format of a JSON object.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/appointment'
+
+    put:
+      tags:
+        - Appointment Routes
+      summary: Updates a specific appointment
+      description: Updates a specific appointment based on it id
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/appointment'
+
+      responses:
+        201:
+          description: Appointment updated succesfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/appointment'
+
+    delete:
+      tags:
+        - Appointment Routes
+      summary: Deletes a specific appointment
+      description: Deletes a specific appointment based on it id
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+
+      responses:
+        201:
+          description: Appointment deleted succesfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/appointment'
+    
+
+
+  /shoppingItem:
+    get:
+      tags:
+        - shoppingItem Routes
+      summary: Retrieves a list of shoppingItem
+      description: Retrieves a list of shoppingItem as JSON objects.
+      responses:
+        200:
+          description: A list of product JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/shoppingItem"
+
+
+    post:
+      tags:
+        - shoppingItem Routes
+      summary: Create a new shoppingItem
+      description: Create a new shoppingItem
+      security:
+        - ApiKeyAuth: []      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/shoppingItem"
+
+      responses:
+        201:
+          description: shoppingItem created succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shoppingItem"
+  
+  /shoppingItem/{id}:
+    get:
+      tags:
+        - shoppingItem Routes
+      summary: Specific shoppingItem
+      description: Retrieves a specific shoppingItem based on it id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      responses:
+        200:
+          description: An shoppingItem in the format of a JSON object.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/shoppingItem'
+
+    put:
+      tags:
+        - shoppingItem Routes
+      summary: Updates a specific shoppingItem
+      description: Updates a specific shoppingItem based on it id
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/shoppingItem'
+
+      responses:
+        201:
+          description: shoppingItem updated succesfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/shoppingItem'
+
+    delete:
+      tags:
+        - shoppingItem Routes
+      summary: Deletes a specific shoppingItem
+      description: Deletes a specific shoppingItem based on it id
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+
+      responses:
+        201:
+          description: shoppingItem deleted succesfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/shoppingItem'
+
+  /toDo:
+    get:
+      tags:
+        - toDo Routes
+      summary: Retrieves a list of toDo
+      description: Retrieves a list of toDo as JSON objects.
+      responses:
+        200:
+          description: A list of toDo JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/toDo"
+
+
+    post:
+      tags:
+        - toDo Routes
+      summary: Create a new toDo
+      description: Create a new toDo
+      security:
+        - ApiKeyAuth: []      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/toDo"
+
+      responses:
+        201:
+          description: toDo created succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/toDo"
+  
+  /toDo/{id}:
+    get:
+      tags:
+        - toDo Routes
+      summary: Specific toDo
+      description: Retrieves a specific toDo based on it id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      responses:
+        200:
+          description: A toDo in the format of a JSON object.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/toDo'
+
+    put:
+      tags:
+        - toDo Routes
+      summary: Updates a specific toDo
+      description: Updates a specific toDo based on it id
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/toDo'
+
+      responses:
+        201:
+          description: toDo updated succesfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/toDo'
+
+    delete:
+      tags:
+        - toDo Routes
+      summary: Deletes a specific toDo
+      description: Deletes a specific toDo based on it id
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+
+      responses:
+        201:
+          description: toDo deleted succesfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/toDo'
