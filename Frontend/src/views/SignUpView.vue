@@ -1,11 +1,10 @@
 <template>
   <body>
   
-           <!-- FORMULAIRE DE CONNEXION -->
       <div class="card">
           <h2>Signup Form</h2>
   
-              <!-- SE CONNECTER / S'INSCRIRE -->
+            
           <div class="login_register">
               <a href="
   /
@@ -15,31 +14,56 @@
   " class="register" target="blank">Signup</a>
           </div>
   
-              <!-- FORMULAIRE -->
+              <!-- FORMUALR -->
           <form class="form">
               <input type="email" v-model="email" placeholder="Email Adress" class="email">
               <input type="password" v-model="password" placeholder="Password" class="pass">
           </form>
   
-              <!-- MOT DE PASSE OUBLIE ? -->
           <a href="#" class="fp">Forgot password?</a>
   
-              <!-- BOUTTON LOGIN -->
-              <button type="button" @click="login" class="login_btn">Signup</button>
+
+              <button type="button" @click="signUp" class="signUp_btn">Signup</button>
       </div>
-  
-  
-  
-  
           
   </body>
-  
   </template>
   
   
-  <script setup>
+<script setup>
+  import { ref } from 'vue'
+    
+    const email = ref('')
+    const password = ref ('')
 
-  </script>
+    const signUp = async () => {
+    try {    const data = {
+        email: email,
+        password: password
+      }
+      await fetch('http://localhost:4000/api/user/register', {
+        method: 'POST', 
+        headers: {
+          'content-type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(data) // body data type must match "Content-Type" header)
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          let token = data.data
+          localStorage.setItem('auth-token', '')
+          localStorage.setItem('auth-token', token.data)
+        })
+        .catch((err) => {
+          alert(err.message)
+        })}
+    catch(error) {
+      console.log(error.message)
+    }
+
+    }
+</script>
   
   <style scoped>
   

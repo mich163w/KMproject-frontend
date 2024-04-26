@@ -2,55 +2,43 @@
 
   <body>
 
-    <!-- FORMULAIRE DE CONNEXION -->
+
     <div class="card">
       <h2>Login Form</h2>
 
-      <!-- SE CONNECTER / S'INSCRIRE -->
       <div class="login_register">
         <a href="/" class="login" target="blank">Login</a>
         <a href="/signup" class="register" target="blank">Signup</a>
       </div>
 
-      <!-- FORMULAIRE -->
+      <!-- FORMULAR -->
       <form class="form">
         <input type="email" v-model="email" placeholder="Email Adress" class="email">
         <input type="password" v-model="password" placeholder="Password" class="pass">
       </form>
 
-      <!-- MOT DE PASSE OUBLIE ? -->
       <a href="#" class="fp">Forgot password?</a>
 
-      <!-- BOUTTON LOGIN -->
       <button type="button" @click="login" class="login_btn">Login</button>
-
-      <!-- PIED DE LA CARD -->
-      <!--     <div class="footer_card">
-          <p>Not a member?</p>
-          <a href="#">Singup now</a>
-          </div> -->
     </div>
 
   </body>
-
 </template>
 
 
 <script scoped>
-      import { ref } from 'vue'
+  import { ref } from 'vue'
   
   const email = ref('')
   const password = ref ('')
 
-
-
   const login = async () => {
   try {    const data = {
-      emailOrUsername: email,
+      email: email,
       password: password
     }
     await fetch('http://localhost:4000/api/user/login', {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      method: 'POST', 
       headers: {
         'content-type': 'application/json'
       },
