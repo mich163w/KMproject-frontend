@@ -34,8 +34,8 @@
 
   const login = async () => {
   try {    const data = {
-      email: email,
-      password: password
+      email: email.value,
+      password: password.value
     }
     await fetch('http://localhost:4000/api/user/login', {
       method: 'POST', 
