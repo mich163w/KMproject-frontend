@@ -12,8 +12,8 @@ describe('Product workflow tests', () => {
         // 1) Register new user dsadsa
         let user = {
             name: "Peter Petersen",
-            email: "mail54@petersen.com",
-            password: "123456"
+            email: "mail@petersen.com",
+            password: "12345678"
         }
         chai.request(server)
             .post('/api/user/register')
@@ -29,8 +29,8 @@ describe('Product workflow tests', () => {
                 chai.request(server)
                     .post('/api/user/login')
                     .send({
-                        "email": "mail54@petersen.com",
-                        "password": "123456"
+                        "email": "mail@petersen.com",
+                        "password": "12345678"
                     })
                     .end((err, res) => {
                         // Asserts                        
@@ -80,8 +80,8 @@ describe('Product workflow tests', () => {
         // 1) Register new user
         let user = {
             name: "Peter Petersen",
-            email: "mail54@petersen.com",
-            password: "123456"
+            email: "mail@petersen.com",
+            password: "12345678"
         }
         chai.request(server)
             .post('/api/user/register')
@@ -97,8 +97,8 @@ describe('Product workflow tests', () => {
                 chai.request(server)
                     .post('/api/user/login')
                     .send({
-                        "email": "mail54@petersen.com",
-                        "password": "123456"
+                        "email": "mail@petersen.com",
+                        "password": "12345678"
                     })
                     .end((err, res) => {
                         // Asserts                        

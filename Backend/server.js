@@ -1,9 +1,26 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+
 const app = express();
 // const { verifyToken } = require("./validation"); --> har ikke lyst til det er på alle og så tilføj linje 55 i stedet for 54
 
+
+// CORS npm package
+app.use(cors({
+    "origin": "*"
+}));
+
+
+/*
+app.use(function (req, res, next) {
+    res.header("Acces-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-Width, Content-Type, Accept");
+    next();
+});
+
+*/
 
 // swagger dependencies
 const swaggerUi = require("swagger-ui-express");
@@ -21,6 +38,10 @@ const toDoRoutes = require("./routes/toDo");
 
 
 require("dotenv-flow").config();
+
+
+
+
 
 
 // parse request of content-type JSON

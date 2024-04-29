@@ -26,8 +26,12 @@
 </template>
 
 
-<script scoped>
-  import { ref } from 'vue'
+<script setup>
+import { ref, computed } from 'vue'
+import { useRoute , useRouter } from 'vue-router'
+
+const route = useRoute();
+const router = useRouter();
   
   const email = ref('')
   const password = ref ('')
@@ -42,7 +46,7 @@
       headers: {
         'content-type': 'application/json'
       },
-      credentials: 'include',
+      //credentials: 'include',
       body: JSON.stringify(data) // body data type must match "Content-Type" header)
     })
       .then((res) => res.json())
@@ -50,6 +54,8 @@
         let token = data.data
         localStorage.setItem('auth-token', '')
         localStorage.setItem('auth-token', token.data)
+        console.log(token)
+        router.push('/board')
       })
       .catch((err) => {
         alert(err.message)

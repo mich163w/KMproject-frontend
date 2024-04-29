@@ -16,6 +16,7 @@
   
               <!-- FORMUALR -->
           <form class="form">
+              <input type="name" v-model="name" placeholder="Name" class="name">
               <input type="email" v-model="email" placeholder="Email Adress" class="email">
               <input type="password" v-model="password" placeholder="Password" class="pass">
           </form>
@@ -31,13 +32,19 @@
   
   
 <script setup>
-  import { ref } from 'vue'
+  import { ref, computed } from 'vue'
+  import { useRoute , useRouter } from 'vue-router'
+
+  const route = useRoute();
+  const router = useRouter();
     
+    const name = ref ('')
     const email = ref('')
     const password = ref ('')
-
+    
     const signUp = async () => {
     try {    const data = {
+        name: name.value,
         email: email.value,
         password: password.value
       }
@@ -46,14 +53,13 @@
         headers: {
           'content-type': 'application/json'
         },
-        credentials: 'include',
+        //credentials: 'include',
         body: JSON.stringify(data) // body data type must match "Content-Type" header)
       })
         .then((res) => res.json())
         .then((data) => {
-          let token = data.data
-          localStorage.setItem('auth-token', '')
-          localStorage.setItem('auth-token', token.data)
+        router.push('/')
+          
         })
         .catch((err) => {
           alert(err.message)

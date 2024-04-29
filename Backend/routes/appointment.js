@@ -19,7 +19,7 @@ router.post("/", /*verifyToken,*/ (req, res) => {
     appointment.insertMany(data)
 
         // responds with the data
-        .then(data => { res.send(data); })
+        .then(data => { res.status(201).send(data); })
         .catch(err => { res.status(500).send({ message: err.message }); })
 
 });

@@ -64,6 +64,7 @@ const jwt = require('jsonwebtoken');
         const { error } = loginValidation(req.body);
 
         if (error) {
+            console.log("wrong user info");
             return res.status(400).json({ error: error.details[0].message});
         }
 
@@ -73,6 +74,7 @@ const jwt = require('jsonwebtoken');
 
         // throw error if the email is wrong (user does not exist in DB)
         if (!user) {
+            console.log("not found in db");
             return res.status(400).json({ error: "Email is wrong"})
         }
 
