@@ -1,25 +1,25 @@
 import { ref, computed } from 'vue'
 import { useRoute , useRouter } from 'vue-router'
 
-const getAppo = () => {
+const getShop = () => {
 
   const route = useRoute();
   const router = useRouter();
 
-  const appoId = computed(() => route.params.id)
-  //console.log("appoId: ", appoId)
+  const shopId = computed(() => route.params.id)
+  //console.log("shopId: ", shopId)
 
   const state = ref({
-    appointmentName: '',
-    appos: {}
+    shoppingItemName: '',
+    shops: {}
   })
 
-  const getAllAppo = async () => {
+  const getAllShop = async () => {
     try {
-       await fetch("http://localhost:4000/api/appointment/")
+       await fetch("http://localhost:4000/api/shoppingItem/")
       .then(res => res.json())
       .then(data => {
-        state.value.appos = data
+        state.value.shops = data
         // debugger
       })
     }
@@ -34,7 +34,7 @@ const getAppo = () => {
 
 
 
-const newAppo = () => { 
+const newShop = () => { 
     const requestOptions = {
       method: "POST",
       headers: {
@@ -42,12 +42,12 @@ const newAppo = () => {
         "auth-token": state.token
       },
       body: JSON.stringify({
-        appo: state.value.appointmentName
+        shop: state.value.shoppingItemName
       }) 
     }
-      fetch("http://localhost:4000/api/appointment/", 
+      fetch("http://localhost:4000/api/shoppingItem/", 
       requestOptions
-    ).then(GetAllAppo())
+    ).then(GetAllShop())
   }
 
 
@@ -55,16 +55,16 @@ const newAppo = () => {
 
 
 
-  const deleteAppo = (_id) => {
-    fetch("http://localhost:4000/api/appointment/delete/" + _id, { method: "DELETE"})
-      .then(GetAllAppo())
+  const deleteShop = (_id) => {
+    fetch("http://localhost:4000/api/shoppingItem/delete/" + _id, { method: "DELETE"})
+      .then(GetAllShop())
   }
 
 
 
 
 
-  const editAppo = () => { 
+  const editShop = () => { 
     const requestOptions = {
       method: "PUT",
       headers: {
@@ -72,12 +72,12 @@ const newAppo = () => {
         "auth-token": state.token
       },
       body: JSON.stringify({
-        appo: state.value.appointmentName
+        shop: state.value.shoppingItemName
       }) 
     }
-    fetch("http://localhost:4000/api/appointment/update/" + appoId.value, 
+    fetch("http://localhost:4000/api/shoppingItem/update/" + shopId.value, 
     requestOptions)
-      .then(GetAllAppo())
+      .then(GetAllShop())
       .then(res =>  res.body ) // redundant
       .then(res => {console.log(res)}) // redundant
       router.push('/')
@@ -85,13 +85,13 @@ const newAppo = () => {
 
 
 
-  const appo = ref({})
-  const getSpecificAppo = async () => {
+  const shop = ref({})
+  const getSpecificShop = async () => {
     try {
-      fetch("http://localhost:4000/api/appointment/")
+      fetch("http://localhost:4000/api/shoppingItem/")
         .then(res =>  res.json() ) 
         .then(data => {
-            appo.value = data.filter(t => t._id === appoId.value)
+            shop.value = data.filter(t => t._id === shopId.value)
         })
     }
     catch(error) {
@@ -102,15 +102,15 @@ const newAppo = () => {
 
 
   return {
-    appoId,
-    getAppo,
+    shopId,
+    getShop,
     state,
-    getSpecificAppo,
-    getAllAppo,
-    newAppo,
-    deleteAppo,
-    editAppo,
+    getSpecificShop,
+    getAllShop,
+    newShop,
+    deleteShop,
+    editShop,
   }
 
 
-export default getAppo
+export default getShop
