@@ -1,18 +1,18 @@
 import { ref, computed } from 'vue'
-import { useRoute , useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const getShop = () => {
 
   const route = useRoute();
   const router = useRouter();
-
   const shopId = computed(() => route.params.id)
-  //console.log("shopId: ", shopId)
 
   const state = ref({
     shoppingItemName: '',
     shops: {}
   })
+
+
 
   const getAllShop = async () => {
     try {
@@ -27,7 +27,6 @@ const getShop = () => {
       console.log(error) // do different error to showcase - line 15 wrong name + line13 with incorrect path
     }
   }
-
 
 
 
@@ -60,7 +59,7 @@ const newShop = () => {
       })
       .catch(error => {
         console.error('Error adding new shop:', error);
-        // Håndter fejl her
+    
       });
   };
   

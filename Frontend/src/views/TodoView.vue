@@ -63,10 +63,11 @@
 
     
     <div class="lists-container">
+
     <div class="list">
         <h3 class="list-title">Shopping list</h3>
         <form class="form">
-            <input type="text" v-model="state.shoppingItemName" placeholder="Add item" class="shoppingItem">
+            <input type="text" v-model="state.shoppingItemName" placeholder="Add" class="shoppingItem">
         </form>
         <button @click="newShop" class="add-card-btn btn">Add</button>
         <ul>
@@ -78,65 +79,47 @@
 
 
 
+    <div class="list">
+        <h3 class="list-title">Appointment list</h3>
+        <form class="form">
+            <input type="text" v-model="state.appointmentName" placeholder="Add" class="appointment">
+        </form>
+        <button @click="newAppo" class="add-card-btn btn">Add</button>
+        <ul>
+            <li v-for="item in state.appos" :key="item._id" draggable="true" @dragstart="drag($event)">
+                {{ item.appointmentName }}
+            </li>
+        </ul>
+    </div>
+      
 
-  
-  
+      
 
       
 
 
-
-      <div class="list">
-        <h3 class="list-title">To do</h3>
-        <draggable v-model="todoList" tag="ul" group="lists" :animation="300">
-          <template #item="{ element: item }">
-            <li draggable="true" @dragstart="drag($event)">{{ item }}</li>
-          </template>
-        </draggable>
-        <button class="add-card-btn btn" @click="addItem('todoList')">Add a card</button>
-      </div>
-
-      <div class="list">
-        <h3 class="list-title">Appointments</h3>
-        <draggable v-model="appointmentsList" tag="ul" group="lists" :animation="300">
-          <template #item="{ element: item }">
-            <li draggable="true" @dragstart="drag($event)">{{ item }}</li>
-          </template>
-        </draggable>
-        <button class="add-card-btn btn" @click="addItem('appointmentsList')">Add a card</button>
-      </div>
-
-      <div class="list">
-        <h3 class="list-title">Done</h3>
-        <draggable v-model="doneList" tag="ul" group="lists" :animation="300">
-          <template #item="{ element: item }">
-            <li draggable="true" @dragstart="drag($event)">{{ item }}</li>
-          </template>
-        </draggable>
-        <button class="add-card-btn btn" @click="addItem('doneList')">Add a card</button>
-      </div>
-
-      <!-- Add other lists as needed -->
-
-      <button class="add-list-btn btn">Add a list</button>
-  
   </div> 
 </div>
 
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
+import { onMounted } from 'vue';
 import draggable from 'vuedraggable';
 import shopCrud from '../modules/shopCrud';
+import appoCrud from '../modules/appoCrud';
 
 
 const { state, getAllShop, newShop, deleteShop, editShop } = shopCrud();
+const { appoState, getAllAppo, newAppo, deleteAppo, editAppo } = appoCrud();
+
 
   
 
 onMounted(() => {
   getAllShop();
+  getAllAppo();
 
 });
 
