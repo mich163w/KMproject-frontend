@@ -26,7 +26,7 @@ const getShop = () => {
     catch(error) {
       console.log(error) // do different error to showcase - line 15 wrong name + line13 with incorrect path
     }
-}
+  }
 
 
 

@@ -64,22 +64,25 @@
     
     <div class="lists-container">
     <div class="list">
-      <h3 class="list-title">Shopping list</h3>
-      <draggable v-model="state.shops.shoppingList" tag="ul" group="lists" :animation="300">
-        <template #item="{ element: item }">
-          <li draggable="true" @dragstart="drag($event)">{{ item }}</li>
-        </template>
-      </draggable>
-      <form class="form">
-        <input type="text" v-model="state.shoppingItemName" placeholder="Add item" class="shoppingItem">
-      </form>
-      <button @click="newShop" class="add-card-btn btn">Add a card</button>
+        <h3 class="list-title">Shopping list</h3>
+        <form class="form">
+            <input type="text" v-model="state.shoppingItemName" placeholder="Add item" class="shoppingItem">
+        </form>
+        <button @click="newShop" class="add-card-btn btn">Add</button>
+        <ul>
+            <li v-for="item in state.shops" :key="item._id" draggable="true" @dragstart="drag($event)">
+                {{ item.shoppingItemName }}
+            </li>
+        </ul>
     </div>
+
+
+
+
+  
   
 
       
-
-
 
 
 
@@ -116,8 +119,9 @@
       <!-- Add other lists as needed -->
 
       <button class="add-list-btn btn">Add a list</button>
-    </div>
-  </div>
+  
+  </div> 
+</div>
 
 </template>
 
@@ -126,25 +130,17 @@ import { ref, onMounted } from 'vue';
 import draggable from 'vuedraggable';
 import shopCrud from '../modules/shopCrud';
 
+
 const { state, getAllShop, newShop, deleteShop, editShop } = shopCrud();
+
+  
 
 onMounted(() => {
   getAllShop();
+
 });
 
 
-/* const shoppingList = ref(['Peber', 'Mælk', 'Chips', 'Pandekager']);
-const todoList = ref(['Vaske tøj', 'Støvsuge', 'Løbe']);
-const appointmentsList = ref(['Spise med Jake', 'Byen med Jake']);
-const doneList = ref(['Købe blomster', 'Besøge morfar']);
-
-function addItem(listName) {
-  const list = eval(listName);
-  const newItem = prompt('Enter new item:');
-  if (newItem) {
-    list.push(newItem);
-  }
-} */
 
 function allowDrop(ev) {
   ev.preventDefault();
@@ -499,11 +495,12 @@ li {
 .add-card-btn {
   display: block;
   font-size: 14px;
-  font-weight: 400;
-  color: #8b8b8b;
+  font-weight: 600;
+  color: #fff;
   padding: 1rem;
   text-align: left;
   cursor: pointer;
+  background-color: #6cba80cc;
 }
 
 .add-card-btn:hover {

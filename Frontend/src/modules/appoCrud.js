@@ -31,10 +31,7 @@ const getAppo = () => {
 
 
 
-
-
-
-const newAppo = () => { 
+  const newAppo = () => { 
     const requestOptions = {
       method: "POST",
       headers: {
@@ -44,11 +41,25 @@ const newAppo = () => {
       body: JSON.stringify({
         appo: state.value.appointmentName
       }) 
-    }
-      fetch("http://localhost:4000/api/appointment/", 
-      requestOptions
-    ).then(GetAllAppo())
-  }
+    };
+  
+    fetch("http://localhost:4000/api/appointment/", requestOptions)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Håndter data her, hvis det er nødvendigt
+        console.log('New Appointment added:', data);
+        getAllAppo(); // Kald getAllAppo efter succesfuld oprettelse af butik
+      })
+      .catch(error => {
+        console.error('Error adding new appointment:', error);
+        // Håndter fejl her
+      });
+  };
 
 
 
@@ -57,7 +68,7 @@ const newAppo = () => {
 
   const deleteAppo = (_id) => {
     fetch("http://localhost:4000/api/appointment/delete/" + _id, { method: "DELETE"})
-      .then(GetAllAppo())
+      .then(getAllAppo())
   }
 
 
@@ -77,7 +88,7 @@ const newAppo = () => {
     }
     fetch("http://localhost:4000/api/appointment/update/" + appoId.value, 
     requestOptions)
-      .then(GetAllAppo())
+      .then(getAllAppo())
       .then(res =>  res.body ) // redundant
       .then(res => {console.log(res)}) // redundant
       router.push('/')
