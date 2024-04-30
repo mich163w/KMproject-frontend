@@ -56,16 +56,32 @@
 
       </button>
     </section>
+
+
+
+
+
+    
     <div class="lists-container">
-      <div class="list">
-        <h3 class="list-title">Shopping list</h3>
-        <draggable v-model="shoppingList" tag="ul" group="lists" :animation="300">
-          <template #item="{ element: item }">
-            <li draggable="true" @dragstart="drag($event)">{{ item }}</li>
-          </template>
-        </draggable>
-        <button class="add-card-btn btn" @click="addItem('shoppingList')">Add a card</button>
-      </div>
+    <div class="list">
+      <h3 class="list-title">Shopping list</h3>
+      <draggable v-model="state.shops.shoppingList" tag="ul" group="lists" :animation="300">
+        <template #item="{ element: item }">
+          <li draggable="true" @dragstart="drag($event)">{{ item }}</li>
+        </template>
+      </draggable>
+      <form class="form">
+        <input type="text" v-model="state.shoppingItemName" placeholder="Add item" class="shoppingItem">
+      </form>
+      <button @click="newShop" class="add-card-btn btn">Add a card</button>
+    </div>
+  
+
+      
+
+
+
+
 
       <div class="list">
         <h3 class="list-title">To do</h3>
@@ -106,10 +122,18 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import draggable from 'vuedraggable';
+import shopCrud from '../modules/shopCrud';
 
-const shoppingList = ref(['Peber', 'Mælk', 'Chips', 'Pandekager']);
+const { state, getAllShop, newShop, deleteShop, editShop } = shopCrud();
+
+onMounted(() => {
+  getAllShop();
+});
+
+
+/* const shoppingList = ref(['Peber', 'Mælk', 'Chips', 'Pandekager']);
 const todoList = ref(['Vaske tøj', 'Støvsuge', 'Løbe']);
 const appointmentsList = ref(['Spise med Jake', 'Byen med Jake']);
 const doneList = ref(['Købe blomster', 'Besøge morfar']);
@@ -120,7 +144,7 @@ function addItem(listName) {
   if (newItem) {
     list.push(newItem);
   }
-}
+} */
 
 function allowDrop(ev) {
   ev.preventDefault();
@@ -135,8 +159,12 @@ function drop(ev) {
   var data = ev.dataTransfer.getData("text");
   ev.target.appendChild(document.getElementById(data));
 }
-
 </script>
+
+
+
+
+
 <style scoped>
 /* Importer style.css */
 *,

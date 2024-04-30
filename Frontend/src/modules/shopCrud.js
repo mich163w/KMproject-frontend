@@ -27,7 +27,7 @@ const getShop = () => {
       console.log(error) // do different error to showcase - line 15 wrong name + line13 with incorrect path
     }
 }
-}
+
 
 
 
@@ -42,13 +42,28 @@ const newShop = () => {
         "auth-token": state.token
       },
       body: JSON.stringify({
-        shop: state.value.shoppingItemName
+        shoppingItemName: state.value.shoppingItemName
       }) 
-    }
-      fetch("http://localhost:4000/api/shoppingItem/", 
-      requestOptions
-    ).then(GetAllShop())
-  }
+    };
+  
+    fetch("http://localhost:4000/api/shoppingItem", requestOptions)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Håndter data her, hvis det er nødvendigt
+        console.log('New shop added:', data);
+        getAllShop(); // Kald getAllShop efter succesfuld oprettelse af butik
+      })
+      .catch(error => {
+        console.error('Error adding new shop:', error);
+        // Håndter fejl her
+      });
+  };
+  
 
 
 
@@ -57,7 +72,7 @@ const newShop = () => {
 
   const deleteShop = (_id) => {
     fetch("http://localhost:4000/api/shoppingItem/delete/" + _id, { method: "DELETE"})
-      .then(GetAllShop())
+      .then(getAllShop())
   }
 
 
@@ -77,7 +92,7 @@ const newShop = () => {
     }
     fetch("http://localhost:4000/api/shoppingItem/update/" + shopId.value, 
     requestOptions)
-      .then(GetAllShop())
+      .then(getAllShop())
       .then(res =>  res.body ) // redundant
       .then(res => {console.log(res)}) // redundant
       router.push('/')
@@ -112,5 +127,5 @@ const newShop = () => {
     editShop,
   }
 
-
+}
 export default getShop
