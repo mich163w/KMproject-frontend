@@ -73,6 +73,10 @@
         <ul>
             <li v-for="item in state.shops" :key="item._id" draggable="true" @dragstart="drag($event)">
                 {{ item.shoppingItemName }}
+                <div class="item-buttons">
+                <button @click="editAppo(item)" class="edit-btn">Edit</button>
+                <button @click="deleteAppo(item._id)" class="delete-btn">Delete</button>
+            </div>
             </li>
         </ul>
     </div>
@@ -80,17 +84,22 @@
 
 
     <div class="list">
-        <h3 class="list-title">Appointment list</h3>
-        <form class="form">
-            <input type="text" v-model="state.appointmentName" placeholder="Add" class="appointment">
-        </form>
-        <button @click="newAppo" class="add-card-btn btn">Add</button>
-        <ul>
-            <li v-for="item in state.appos" :key="item._id" draggable="true" @dragstart="drag($event)">
-                {{ item.appointmentName }}
-            </li>
-        </ul>
-    </div>
+    <h3 class="list-title">Appointment list</h3>
+    <form class="form">
+        <input type="text" v-model="state.appointmentName" placeholder="Add" class="appointment">
+    </form>
+    <button @click="newAppo" class="add-card-btn btn">Add</button>
+    <ul>
+        <li v-for="item in state.appos" :key="item._id" draggable="true" @dragstart="drag($event)">
+            {{ item.appointmentName }}
+            <div class="item-buttons">
+                <button @click="editAppo(item)" class="edit-btn">Edit</button>
+                <button @click="deleteAppo(item._id)" class="delete-btn">Delete</button>
+            </div>
+        </li>
+    </ul>
+</div>
+
       
 
       
@@ -454,6 +463,7 @@ ul {
 
 .list-items,
 li {
+  display: flex;
   font-size: 16px;
   font-weight: 200;
   line-height: 1.3;
@@ -474,6 +484,39 @@ li {
 .list-items li:hover {
   background-color: #eee;
 }
+
+.item-buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.edit-btn,
+.delete-btn {
+    margin-left: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 14px;
+    border: none;
+    border-radius: 0.2rem;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background-color: #a9baa9;
+    color: white;
+    border-radius: 20px;
+}
+
+.delete-btn {
+    background-color: #cdafad;
+    color: white;
+    border-radius: 20px;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+    opacity: 0.8;
+}
+
 
 .add-card-btn {
   display: block;
