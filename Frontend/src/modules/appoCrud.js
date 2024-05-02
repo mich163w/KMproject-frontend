@@ -67,7 +67,7 @@ const getAppo = () => {
 
 
   const deleteAppo = (_id) => {
-    fetch("http://localhost:4000/api/appointment/delete/" + _id, { method: "DELETE" })
+    fetch("http://localhost:4000/api/appointment/" + _id, { method: "DELETE" })
       .then(getAllAppo)
       .catch(error => {
         console.error('Error deleting appointment:', error);

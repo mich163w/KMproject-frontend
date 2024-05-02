@@ -70,7 +70,7 @@ const newTodo = () => {
 
 
   const deleteTodo = (_id) => {
-    fetch("http://localhost:4000/api/toDo/delete/" + _id, { method: "DELETE"})
+    fetch("http://localhost:4000/api/toDo/" + _id, { method: "DELETE"})
     .then(getAllTodo)
     .catch(error => {
       console.error('Error deleting Todo:', error);
@@ -91,7 +91,7 @@ const newTodo = () => {
         todo: stateTodo.value.toDoName
       }) 
     }
-    fetch("http://localhost:4000/api/toDo/update/" + todoId.value, 
+    fetch("http://localhost:4000/api/toDo/" + todoId.value, 
     requestOptions)
       .then(getAllTodo())
       .then(res =>  res.body ) // redundant

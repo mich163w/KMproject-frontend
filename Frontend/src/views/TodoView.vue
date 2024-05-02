@@ -65,21 +65,23 @@
 <div class="lists-container">
 
   <div class="list">
-        <h3 class="list-title">Shopping list</h3>
-        <form class="form">
-            <input type="text" v-model="state.shoppingItemName" placeholder="Add" class="shoppingItem">
-        </form>
-        <button @click="newShop" class="add-card-btn btn">Add</button>
-        <ul>
-            <li v-for="item in state.shops" :key="item._id" draggable="true" @dragstart="drag($event)">
-                {{ item.shoppingItemName }}
-                <div class="item-buttons">
-                <button @click="editAppo(shop)" class="edit-btn">Edit</button>
-                <button @click="deleteAppo(shop._id)" class="delete-btn">Delete</button>
+    <h3 class="list-title">Shopping list</h3>
+    <form class="form">
+        <input type="text" v-model="state.shoppingItemName" placeholder="Add" class="shoppingItem">
+    </form>
+    <button @click="newShop" class="add-card-btn btn">Add</button>
+    <ul>
+        <li v-for="item in state.shops" :key="item._id" draggable="true" @dragstart="drag($event)">
+            {{ item.shoppingItemName }}
+            <div class="item-buttons">
+                <button @click="editShop(item)" class="edit-btn">Edit</button>
+                <button @click="deleteShop(item._id)" class="delete-btn">Delete</button>
             </div>
-            </li>
-        </ul>
-  </div>
+            <pre>{{ item }}</pre> <!-- Denne linje logger item -->
+        </li>
+    </ul>
+</div>
+
 
 
 
@@ -90,15 +92,17 @@
     </form>
     <button @click="newAppo" class="add-card-btn btn">Add</button>
     <ul>
-        <li v-for="item in statet.appos" :key="item._id" draggable="true" @dragstart="drag($event)">
-            {{ item.appointmentName }}
-            <div class="item-buttons">
-                <button @click="editAppo(appo._id)" class="edit-btn">Edit</button>
-                <button @click="deleteAppo(appo._id)" class="delete-btn">Delete</button>
-            </div>
-        </li>
-    </ul>
-  </div>
+    <li v-for="item in statet.appos" :key="item._id" draggable="true" @dragstart="drag($event)">
+        {{ item.appointmentName }}
+        <div class="item-buttons">
+            <button @click="editAppo(item._id)" class="edit-btn">Edit</button>
+            <button @click="deleteAppo(item._id)" class="delete-btn">Delete</button>
+        </div>
+        <pre>{{ item }}</pre> <!-- Denne linje logger item -->
+    </li>
+</ul>
+</div>
+
 
 
 
@@ -141,7 +145,7 @@ import appoCrud from '../modules/appoCrud';
 import todoCrud from '../modules/todoCrud';
 
 
-const { state, getAllShop, newShop, deleteShop, editShop } = shopCrud();
+const { state, getAllShop, deleteShop, editShop } = shopCrud();
 const { statet, getAllAppo, newAppo, deleteAppo, editAppo } = appoCrud();
 const { stateTodo, getAllTodo, newTodo, deleteTodo, editTodo } = todoCrud();
 
@@ -152,7 +156,10 @@ const { stateTodo, getAllTodo, newTodo, deleteTodo, editTodo } = todoCrud();
     getAllTodo();
       })
 
-
+      const newShop = () => {
+    console.log("New shop function called");
+    // din implementering her
+}
 function allowDrop(ev) {
   ev.preventDefault();
 }

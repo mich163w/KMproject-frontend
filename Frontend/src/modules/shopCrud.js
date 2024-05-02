@@ -70,12 +70,13 @@ const newShop = () => {
 
 
   const deleteShop = (_id) => {
-    fetch("http://localhost:4000/api/shoppingItem/delete/" + _id, { method: "DELETE"})
+    fetch("http://localhost:4000/api/shoppingItem/" + _id, { method: "DELETE"})
     .then(getAllAppo)
     .catch(error => {
-      console.error('Error deleting appointment:', error);
+        console.error('Error deleting shopping item:', error);
     });
 }
+
 
 
 
