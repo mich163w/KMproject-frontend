@@ -62,9 +62,9 @@
 
 
     
-    <div class="lists-container">
+<div class="lists-container">
 
-    <div class="list">
+  <div class="list">
         <h3 class="list-title">Shopping list</h3>
         <form class="form">
             <input type="text" v-model="state.shoppingItemName" placeholder="Add" class="shoppingItem">
@@ -79,11 +79,11 @@
             </div>
             </li>
         </ul>
-    </div>
+  </div>
 
 
 
-    <div class="list">
+  <div class="list">
     <h3 class="list-title">Appointment list</h3>
     <form class="form">
         <input type="text" v-model="statet.appointmentName" placeholder="Add" class="appointment">
@@ -98,7 +98,27 @@
             </div>
         </li>
     </ul>
-</div>
+  </div>
+
+
+
+
+  <div class="list">
+    <h3 class="list-title">To do list</h3>
+    <form class="form">
+        <input type="text" v-model="stateTodo.toDoName" placeholder="Add" class="todo">
+    </form>
+    <button @click="newTodo" class="add-card-btn btn">Add</button>
+    <ul>
+        <li v-for="item in stateTodo.todos" :key="item._id" draggable="true" @dragstart="drag($event)">
+            {{ item.toDoName }}
+            <div class="item-buttons">
+                <button @click="editTodo(todo._id)" class="edit-btn">Edit</button>
+                <button @click="deleteTodo(todo._id)" class="delete-btn">Delete</button>
+            </div>
+        </li>
+    </ul>
+  </div>
 
       
 
@@ -118,21 +138,19 @@ import { onMounted } from 'vue';
 import draggable from 'vuedraggable';
 import shopCrud from '../modules/shopCrud';
 import appoCrud from '../modules/appoCrud';
+import todoCrud from '../modules/todoCrud';
 
 
 const { state, getAllShop, newShop, deleteShop, editShop } = shopCrud();
-const { statet, appoState, getAllAppo, newAppo, deleteAppo, editAppo } = appoCrud();
+const { statet, getAllAppo, newAppo, deleteAppo, editAppo } = appoCrud();
+const { stateTodo, getAllTodo, newTodo, deleteTodo, editTodo } = todoCrud();
 
 
   onMounted(() => {
     getAllShop();
     getAllAppo();
+    getAllTodo();
       })
-
-
-  
-
-
 
 
 function allowDrop(ev) {
