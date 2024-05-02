@@ -35,6 +35,12 @@ components:
         toDoName:
           type: string
 
+    board:
+      type: object
+      properties:
+        boardName:
+          type: string
+
     
     User:
       type: object
@@ -450,3 +456,118 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/toDo'
+
+
+  /board:
+    get:
+      tags:
+        - board Routes
+      summary: Retrieves a list of boards
+      description: Retrieves a list of boards as JSON objects.
+      responses:
+        200:
+          description: A list of boards JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/board"
+
+
+    post:
+      tags:
+        - board Routes
+      summary: Create a new board
+      description: Create a new board
+      security:
+        - ApiKeyAuth: []      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/board"
+
+      responses:
+        201:
+          description: Board created succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/board"
+  
+  /board/{id}:
+    get:
+      tags:
+        - board Routes
+      summary: Specific board
+      description: Retrieves a specific board based on it id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      responses:
+        200:
+          description: A board in the format of a JSON object.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/board'
+
+    put:
+      tags:
+        - board Routes
+      summary: Updates a specific board
+      description: Updates a specific board based on it id
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/board'
+
+      responses:
+        201:
+          description: Board updated succesfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/board'
+
+    delete:
+      tags:
+        - board Routes
+      summary: Deletes a specific board
+      description: Deletes a specific board based on it id
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+
+      responses:
+        201:
+          description: Board deleted succesfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/board'

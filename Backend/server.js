@@ -35,6 +35,7 @@ const authRoutes = require("./routes/auth");
 const appointmentRoutes = require("./routes/appointment");
 const shoppingItemRoutes = require("./routes/shoppingItem");
 const toDoRoutes = require("./routes/toDo");
+const boardRoutes = require("./routes/board");
 
 
 require("dotenv-flow").config();
@@ -76,6 +77,7 @@ app.get("/api/welcome", (req, res) => {
 // post, put, delete - CRUD
 app.use("/api/appointment", appointmentRoutes);
 app.use("/api/shoppingItem", shoppingItemRoutes);
+app.use("/api/board", boardRoutes);
 app.use("/api/toDo", toDoRoutes);
 app.use("/api/user", authRoutes);
 
