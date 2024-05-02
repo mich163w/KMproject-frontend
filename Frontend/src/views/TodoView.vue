@@ -74,8 +74,8 @@
             <li v-for="item in state.shops" :key="item._id" draggable="true" @dragstart="drag($event)">
                 {{ item.shoppingItemName }}
                 <div class="item-buttons">
-                <button @click="editAppo(item)" class="edit-btn">Edit</button>
-                <button @click="deleteAppo(item._id)" class="delete-btn">Delete</button>
+                <button @click="editAppo(shop)" class="edit-btn">Edit</button>
+                <button @click="deleteAppo(shop._id)" class="delete-btn">Delete</button>
             </div>
             </li>
         </ul>
@@ -86,15 +86,15 @@
     <div class="list">
     <h3 class="list-title">Appointment list</h3>
     <form class="form">
-        <input type="text" v-model="state.appointmentName" placeholder="Add" class="appointment">
+        <input type="text" v-model="statet.appointmentName" placeholder="Add" class="appointment">
     </form>
     <button @click="newAppo" class="add-card-btn btn">Add</button>
     <ul>
-        <li v-for="item in state.appos" :key="item._id" draggable="true" @dragstart="drag($event)">
+        <li v-for="item in statet.appos" :key="item._id" draggable="true" @dragstart="drag($event)">
             {{ item.appointmentName }}
             <div class="item-buttons">
-                <button @click="editAppo(item)" class="edit-btn">Edit</button>
-                <button @click="deleteAppo(item._id)" class="delete-btn">Delete</button>
+                <button @click="editAppo(appo._id)" class="edit-btn">Edit</button>
+                <button @click="deleteAppo(appo._id)" class="delete-btn">Delete</button>
             </div>
         </li>
     </ul>
@@ -107,7 +107,7 @@
       
 
 
-  </div> 
+</div> 
 </div>
 
 </template>
@@ -121,16 +121,17 @@ import appoCrud from '../modules/appoCrud';
 
 
 const { state, getAllShop, newShop, deleteShop, editShop } = shopCrud();
-const { appoState, getAllAppo, newAppo, deleteAppo, editAppo } = appoCrud();
+const { statet, appoState, getAllAppo, newAppo, deleteAppo, editAppo } = appoCrud();
+
+
+  onMounted(() => {
+    getAllShop();
+    getAllAppo();
+      })
 
 
   
 
-onMounted(() => {
-  getAllShop();
-  getAllAppo();
-
-});
 
 
 

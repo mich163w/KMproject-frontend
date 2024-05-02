@@ -71,9 +71,11 @@ const newShop = () => {
 
   const deleteShop = (_id) => {
     fetch("http://localhost:4000/api/shoppingItem/delete/" + _id, { method: "DELETE"})
-      .then(getAllShop())
-  }
-
+    .then(getAllAppo)
+    .catch(error => {
+      console.error('Error deleting appointment:', error);
+    });
+}
 
 
 

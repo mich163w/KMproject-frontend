@@ -6,7 +6,7 @@ const getAppo = () => {
   const router = useRouter();
   const appoId = computed(() => route.params.id)
 
-  const state = ref({
+  const statet = ref({
     appointmentName: '',
     appos: {}
   })
@@ -19,7 +19,7 @@ const getAppo = () => {
        await fetch("http://localhost:4000/api/appointment/")
       .then(res => res.json())
       .then(data => {
-        state.value.appos = data
+        statet.value.appos = data
         // debugger
       })
     }
@@ -37,10 +37,10 @@ const getAppo = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": state.token
+        "auth-token": statet.token
       },
       body: JSON.stringify({
-        appointmentName: state.value.appointmentName
+        appointmentName: statet.value.appointmentName
       })
     };
 
@@ -76,6 +76,8 @@ const getAppo = () => {
 
 
 
+
+
   
 
   const editAppo = () => {
@@ -83,10 +85,10 @@ const getAppo = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": state.value.token
+        "auth-token": statet.value.token
       },
       body: JSON.stringify({
-        appo: state.value.appointmentName
+        appo: statet.value.appointmentName
       })
     }
     fetch("http://localhost:4000/api/appointment/update/" + appoId.value,
@@ -100,20 +102,29 @@ const getAppo = () => {
       });
   }
 
+
+
+
+
   const appo = ref({})
   const getSpecificAppo = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/appointment/");
-      const data = await res.json();
-      appo.value = data.filter(t => t._id === appoId.value)
-    } catch (error) {
-      console.error(error);
+      fetch("http://localhost:4000/api/appointment/")
+        .then(res =>  res.json() ) 
+        .then(data => {
+            appo.value = data.filter(t => t._id === appoId.value)
+        })
+    }
+    catch(error) {
+      console.log(error)
     }
   }
 
+
+
   return {
     appoId,
-    state,
+    statet,
     getSpecificAppo,
     getAllAppo,
     newAppo,
