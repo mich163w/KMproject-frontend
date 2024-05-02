@@ -10,7 +10,7 @@ const { STATES } = require("mongoose");
 // CRUD Operations
 
 // Create product - post
-router.post("/", /*verifyToken,*/ (req, res) => {
+router.post("/", verifyToken, (req, res) => {
 
     // Body, parsed as json
     let data = req.body;
@@ -81,7 +81,7 @@ router.put("/:id", (req, res) => {
 
 
 // Delete specific product - delete
-router.delete("/:id", /*verifyToken,*/ (req, res) => {
+router.delete("/:id", verifyToken, (req, res) => {
 
     const id = req.params.id;
 
