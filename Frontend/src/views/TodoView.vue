@@ -69,7 +69,7 @@
     <form class="form">
         <input type="text" v-model="state.shoppingItemName" placeholder="Add" class="shoppingItem">
     </form>
-    <button @click="newShop" class="add-card-btn btn">Add</button>
+    <button @click="newShop" class="add-card-btn btn">Add test</button>
     <ul>
         <li v-for="item in state.shops" :key="item._id" draggable="true" @dragstart="drag($event)">
             {{ item.shoppingItemName }}
@@ -85,23 +85,25 @@
 
 
 
-  <div class="list">
+
+<div class="list">
     <h3 class="list-title">Appointment list</h3>
     <form class="form">
         <input type="text" v-model="statet.appointmentName" placeholder="Add" class="appointment">
     </form>
     <button @click="newAppo" class="add-card-btn btn">Add</button>
     <ul>
-    <li v-for="item in statet.appos" :key="item._id" draggable="true" @dragstart="drag($event)">
-        {{ item.appointmentName }}
-        <div class="item-buttons">
-            <button @click="editAppo(item._id)" class="edit-btn">Edit</button>
-            <button @click="deleteAppo(item._id)" class="delete-btn">Delete</button>
-        </div>
-        <pre>{{ item }}</pre> <!-- Denne linje logger item -->
-    </li>
-</ul>
+        <li v-for="item in statet.appos" :key="item._id" draggable="true" @dragstart="drag($event)">
+            {{ item.appointmentName }}
+            <div class="item-buttons">
+                <button @click="editAppo(item._id)" class="edit-btn">Edit</button>
+                <button @click="deleteAppo(item._id)" class="delete-btn">Delete</button>
+            </div>
+            <pre>{{ item }}</pre> <!-- Denne linje logger item -->
+        </li>
+    </ul>
 </div>
+
 
 
 
@@ -114,11 +116,11 @@
     </form>
     <button @click="newTodo" class="add-card-btn btn">Add</button>
     <ul>
-        <li v-for="item in stateTodo.todos" :key="item._id" draggable="true" @dragstart="drag($event)">
-            {{ item.toDoName }}
+        <li v-for="element in stateTodo.todos" :key="element._id" draggable="true" @dragstart="drag($event)">
+            {{ element.toDoName }}
             <div class="item-buttons">
-                <button @click="editTodo(todo._id)" class="edit-btn">Edit</button>
-                <button @click="deleteTodo(todo._id)" class="delete-btn">Delete</button>
+                <button @click="editTodo(element._id)" class="edit-btn">Edit</button>
+                <button @click="deleteTodo(element._id)" class="delete-btn">Delete</button>
             </div>
         </li>
     </ul>
@@ -145,7 +147,7 @@ import appoCrud from '../modules/appoCrud';
 import todoCrud from '../modules/todoCrud';
 
 
-const { state, getAllShop, deleteShop, editShop } = shopCrud();
+const { state, getAllShop, deleteShop, editShop,newShop } = shopCrud();
 const { statet, getAllAppo, newAppo, deleteAppo, editAppo } = appoCrud();
 const { stateTodo, getAllTodo, newTodo, deleteTodo, editTodo } = todoCrud();
 
@@ -156,10 +158,6 @@ const { stateTodo, getAllTodo, newTodo, deleteTodo, editTodo } = todoCrud();
     getAllTodo();
       })
 
-      const newShop = () => {
-    console.log("New shop function called");
-    // din implementering her
-}
 function allowDrop(ev) {
   ev.preventDefault();
 }

@@ -46,7 +46,7 @@ const newShop = () => {
     };
   
     fetch("http://localhost:4000/api/shoppingItem", requestOptions)
-      .then(response => {
+      .then(response => {  
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -71,7 +71,7 @@ const newShop = () => {
 
   const deleteShop = (_id) => {
     fetch("http://localhost:4000/api/shoppingItem/" + _id, { method: "DELETE"})
-    .then(getAllAppo)
+    .then(getAllShop)
     .catch(error => {
         console.error('Error deleting shopping item:', error);
     });

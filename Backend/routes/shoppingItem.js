@@ -79,7 +79,7 @@ router.put("/:id", (req, res) => {
 
 
 // Delete specific product - delete
-router.delete("/:id", verifyToken, (req, res) => {
+router.delete("/:id", /*verifyToken,*/ (req, res) => {
 
     const id = req.params.id;
 
