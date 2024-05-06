@@ -50,11 +50,10 @@ const router = useRouter();
       body: JSON.stringify(data) // body data type must match "Content-Type" header)
     })
       .then((res) => res.json())
-      .then((data) => {
-        let token = data.data
+      .then((output) => {
         localStorage.setItem('auth-token', '')
-        localStorage.setItem('auth-token', token.data)
-        console.log(token)
+        localStorage.setItem('auth-token', output.data.token)
+        localStorage.setItem('userId', output.data.userId)
         router.push('/board')
       })
       .catch((err) => {

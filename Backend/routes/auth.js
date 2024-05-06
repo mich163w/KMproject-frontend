@@ -104,12 +104,12 @@ const jwt = require('jsonwebtoken');
 
             
         )
-
+            const userId = user.id
 
         // attach auth token to header
         res.header("auth-token", token).json({
             error:null,
-            data: { token }
+            data: { token, userId }
         });
     })
 

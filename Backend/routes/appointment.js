@@ -10,7 +10,7 @@ const { STATES } = require("mongoose");
 // CRUD Operations
 
 // Create product - post
-router.post("/", verifyToken, (req, res) => {
+router.post("/", /*verifyToken,*/ (req, res) => {
 
     // Body, parsed as json
     let data = req.body;
@@ -32,6 +32,18 @@ router.post("/", verifyToken, (req, res) => {
 router.get("/", (req, res) => {
 
     appointment.find()
+
+        // responds with the data
+        .then(data => { res.send(data); })
+        .catch(err => { res.status(500).send({ message: err.message }); })
+
+});
+
+
+
+router.get("/:author", (req, res) => {
+
+    appointment.find({ user: req.params.author })
 
         // responds with the data
         .then(data => { res.send(data); })

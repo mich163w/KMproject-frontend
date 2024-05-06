@@ -97,7 +97,6 @@ const newShop = () => {
       .then(getAllShop())
       .then(res =>  res.body ) // redundant
       .then(res => {console.log(res)}) // redundant
-      router.push('/')
   }
 
 
