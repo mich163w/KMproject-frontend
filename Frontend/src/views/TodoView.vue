@@ -74,7 +74,7 @@
         <li v-for="item in state.shops" :key="item._id" draggable="true" @dragstart="drag($event)">
             {{ item.shoppingItemName }}
             <div class="item-buttons">
-                <button @click="editShop(item)" class="edit-btn">Edit</button>
+                <button @click="editShop(state)" class="edit-btn">Edit</button>
                 <button @click="deleteShop(item._id)" class="delete-btn">Delete</button>
             </div>
             <pre>{{ item }}</pre> <!-- Denne linje logger item -->

@@ -41,11 +41,26 @@
                 </div>
             </div>
         </div>
+        <h2>Log ud</h2>
+    <button @click="logOut" class="logO">Log out</button>
         <!-- Slut på Main Content -->
     </div>
+  
 </template>
 
-<script></script>
+<script setup>
+
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const logOut = () => {
+  localStorage.removeItem('auth-token'); // Fjern autentifikationstokenen fra localStorage
+  localStorage.removeItem('userId'); // Fjern også brugerens id, hvis det er nødvendigt
+  router.push('/'); // Omdiriger brugeren til login-siden
+};
+
+</script>
 
 <style scoped>
 /* Globale stilarter */
