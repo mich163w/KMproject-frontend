@@ -61,7 +61,15 @@ const getAppo = () => {
 
 
   const deleteAppo = (_id) => {
-    fetch("http://localhost:4000/api/appointment/" + _id, { method: "DELETE" })
+    const authToken = localStorage.getItem('auth-token'); // Hent autentifikationstokenen fra localStorage
+  
+    fetch(`http://localhost:4000/api/appointment/${_id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": authToken // Tilføj autentifikationstokenen til headers
+      }
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -69,13 +77,13 @@ const getAppo = () => {
         return response.json();
       })
       .then(data => {
-        // Hvis sletningen lykkedes, opdater UI ved at hente alle aftaler igen
+        console.log('Appointment item deleted:', data);
         getAllAppo();
       })
       .catch(error => {
-        console.error('Error deleting appointment:', error);
+        console.error('Error deleting appointment item:', error);
       });
-}
+  };
 
 
 
