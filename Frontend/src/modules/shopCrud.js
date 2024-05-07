@@ -61,13 +61,33 @@ const newShop = () => {
 
 
 
-  const deleteShop = (_id) => {
-    fetch("http://localhost:4000/api/shoppingItem/" + _id, { method: "DELETE"})
-    .then(getAllShop)
+
+
+const deleteShop = (_id) => {
+  const authToken = localStorage.getItem('auth-token'); 
+
+  fetch(`http://localhost:4000/api/shoppingItem/${_id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "auth-token": authToken 
+    }
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('shopping item item deleted:', data);
+      getAllShop();
+    })
     .catch(error => {
-        console.error('Error deleting shopping item:', error);
+      console.error('Error deleting shopping item item:', error);
     });
-}
+};
+
 
 
 

@@ -71,13 +71,30 @@ const newTodo = () => {
 
 
 
-  const deleteTodo = (_id) => {
-    fetch("http://localhost:4000/api/appointment/" + _id, { method: "DELETE" })
-    .then(getAllTodo)
+const deleteTodo = (_id) => {
+  const authToken = localStorage.getItem('auth-token');
+
+  fetch(`http://localhost:4000/api/toDo/${_id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "auth-token": authToken
+    }
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('shopping item item deleted:', data);
+      getAllTodo();
+    })
     .catch(error => {
-      console.error('Error deleting Todo:', error);
+      console.error('Error deleting shopping item item:', error);
     });
-}
+};
 
 
 
