@@ -21,7 +21,6 @@ const getTodo = () => {
       .then(res => res.json())
       .then(data => {
         stateTodo.value.todos = data
-        // debugger
       })
     }
     catch(error) {
@@ -35,14 +34,16 @@ const getTodo = () => {
 
 
 const newTodo = () => { 
+  const userId = localStorage.getItem('userId'); 
     const requestOptions = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": stateTodo.token
+        "auth-token": localStorage.getItem('auth-token') 
       },
       body: JSON.stringify({
-        toDoName: stateTodo.value.toDoName
+        toDoName: stateTodo.value.toDoName,
+        user: userId 
       }) 
     };
   
