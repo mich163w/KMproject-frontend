@@ -34,7 +34,7 @@ const getTodo = () => {
 
 
 const newTodo = () => { 
-  const userId = localStorage.getItem('userId'); 
+  const userId = localStorage.getItem('userId');
     const requestOptions = {
       method: "POST",
       headers: {
