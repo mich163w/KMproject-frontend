@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { verifyToken } = require("../validation");
 const shoppingItem = require("../models/shoppingItem");
-
+const { STATES } = require("mongoose");
 
 
 
@@ -38,6 +38,15 @@ router.get("/", (req, res) => {
 });
 
 
+router.get("/:author", (req, res) => {
+
+    shoppingItem.find({ user: req.params.author })
+
+        // responds with the data
+        .then(data => { res.send(data); })
+        .catch(err => { res.status(500).send({ message: err.message }); })
+
+});
 
 
 

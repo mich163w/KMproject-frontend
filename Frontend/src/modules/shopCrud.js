@@ -26,14 +26,13 @@ const getShop = () => {
     catch(error) {
       console.log(error) // do different error to showcase - line 15 wrong name + line13 with incorrect path
     }
-  }
+  };
 
 
 
 
 const newShop = () => { 
   const userId = localStorage.getItem('userId'); 
-
     const requestOptions = {
       method: "POST",
       headers: {
@@ -47,20 +46,13 @@ const newShop = () => {
     };
   
     fetch("http://localhost:4000/api/shoppingItem", requestOptions)
-      .then(response => {  
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('New shop added:', data);
-        getAllShop();
-      })
-      .catch(error => {
-        console.error('Error adding new shop:', error);
-    
-      });
+    .then(data => {
+      console.log('New shoppingItem added:', data);
+      getAllShop();
+    })
+    .catch(error => {
+      console.error('Error adding new shoppingItem:', error);
+    });
   };
   
 

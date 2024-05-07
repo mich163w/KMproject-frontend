@@ -2,6 +2,7 @@ import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const getAppo = () => {
+
   const route = useRoute();
   const router = useRouter();
   const appoId = computed(() => route.params.id)
@@ -22,7 +23,8 @@ const getAppo = () => {
         .then(data => {
           statet.value.appos = data;
         });
-    } catch(error) {
+    } 
+    catch(error) {
       console.log(error);
     }
   };

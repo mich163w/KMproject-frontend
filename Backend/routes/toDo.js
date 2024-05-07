@@ -39,6 +39,16 @@ router.get("/", (req, res) => {
 
 
 
+router.get("/:author", (req, res) => {
+
+    toDo.find({ user: req.params.author })
+
+        // responds with the data
+        .then(data => { res.send(data); })
+        .catch(err => { res.status(500).send({ message: err.message }); })
+
+});
+
 
 
 // cars/type/           
