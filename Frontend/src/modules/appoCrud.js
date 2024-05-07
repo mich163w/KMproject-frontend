@@ -32,14 +32,16 @@ const getAppo = () => {
 
 
   const newAppo = () => {
+    const userId = localStorage.getItem('userId'); 
     const requestOptions = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": statet.token
+        "auth-token": localStorage.getItem('auth-token') 
       },
       body: JSON.stringify({
-        appointmentName: statet.value.appointmentName // brug state i stedet for statet
+        appointmentName: statet.value.appointmentName,
+        user: userId 
       })
     };
   

@@ -21,7 +21,7 @@ const getShop = () => {
       .then(res => res.json())
       .then(data => {
         state.value.shops = data
-      })
+      });
     }
     catch(error) {
       console.log(error) // do different error to showcase - line 15 wrong name + line13 with incorrect path
@@ -32,14 +32,17 @@ const getShop = () => {
 
 
 const newShop = () => { 
+  const userId = localStorage.getItem('userId'); 
+
     const requestOptions = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": state.token
+        "auth-token": localStorage.getItem('auth-token') // Hent autentifikationstokenen fra localStorage
       },
       body: JSON.stringify({
-        shoppingItemName: state.value.shoppingItemName
+        shoppingItemName: state.value.shoppingItemName,
+        user: userId
       }) 
     };
   
