@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 let appointmentSchema = new Schema(
 {
     appointmentName: {type: String},
-    user: { type: Schema.Types.ObjectId, ref: "user" },
+    user: { type: Schema.Types.ObjectId, ref: "user" }
 }
 );
 

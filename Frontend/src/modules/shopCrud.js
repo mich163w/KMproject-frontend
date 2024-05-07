@@ -16,19 +16,17 @@ const getShop = () => {
 
   const getAllShop = async () => {
     try {
-       await fetch("http://localhost:4000/api/shoppingItem/")
+      const userId = localStorage.getItem('userId'); 
+       await fetch(`http://localhost:4000/api/shoppingItem/${userId}`)
       .then(res => res.json())
       .then(data => {
         state.value.shops = data
-        // debugger
       })
     }
     catch(error) {
       console.log(error) // do different error to showcase - line 15 wrong name + line13 with incorrect path
     }
   }
-
-
 
 
 
@@ -53,9 +51,8 @@ const newShop = () => {
         return response.json();
       })
       .then(data => {
-        // Håndter data her, hvis det er nødvendigt
         console.log('New shop added:', data);
-        getAllShop(); // Kald getAllShop efter succesfuld oprettelse af butik
+        getAllShop();
       })
       .catch(error => {
         console.error('Error adding new shop:', error);
@@ -99,6 +96,7 @@ const newShop = () => {
       .then(res => {console.log(res)}) // redundant
   }
 
+  
 
 
   const shop = ref({})

@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 let shoppingItemSchema = new Schema(
 {
-    shoppingItemName: {type: String}
+    shoppingItemName: {type: String},
+    user: { type: Schema.Types.ObjectId, ref: "user" }
 }
 );
 

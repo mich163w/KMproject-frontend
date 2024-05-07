@@ -16,17 +16,16 @@ const getAppo = () => {
 
   const getAllAppo = async () => {
     try {
-       await fetch("http://localhost:4000/api/appointment/")
-      .then(res => res.json())
-      .then(data => {
-        statet.value.appos = data
-        // debugger
-      })
+      const userId = localStorage.getItem('userId'); 
+      await fetch(`http://localhost:4000/api/appointment/${userId}`) 
+        .then(res => res.json())
+        .then(data => {
+          statet.value.appos = data;
+        });
+    } catch(error) {
+      console.log(error);
     }
-    catch(error) {
-      console.log(error) // do different error to showcase - line 15 wrong name + line13 with incorrect path
-    }
-  }
+  };
 
 
 
@@ -40,19 +39,12 @@ const getAppo = () => {
         "auth-token": statet.token
       },
       body: JSON.stringify({
-        appointmentName: statet.value.appointmentName
+        appointmentName: statet.value.appointmentName // brug state i stedet for statet
       })
     };
-
+  
     fetch("http://localhost:4000/api/appointment/", requestOptions)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
       .then(data => {
-            // Håndter data her, hvis det er nødvendigt
         console.log('New appointment added:', data);
         getAllAppo();
       })

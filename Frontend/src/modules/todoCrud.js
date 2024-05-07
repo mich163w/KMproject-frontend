@@ -16,7 +16,8 @@ const getTodo = () => {
 
   const getAllTodo = async () => {
     try {
-       await fetch("http://localhost:4000/api/toDo/")
+      const userId = localStorage.getItem('userId'); 
+      await fetch(`http://localhost:4000/api/toDo/${userId}`)
       .then(res => res.json())
       .then(data => {
         stateTodo.value.todos = data
