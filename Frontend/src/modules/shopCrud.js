@@ -22,6 +22,7 @@ const getShop = () => {
       .then(data => {
         state.value.shops = data
       });
+      console.log("mongo shop", state.value.shops)
     }
     catch(error) {
       console.log(error) // do different error to showcase - line 15 wrong name + line13 with incorrect path

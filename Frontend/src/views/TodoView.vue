@@ -71,8 +71,18 @@
     </form>
     <button @click="newShop" class="add-card-btn btn">Add test</button>
     <ul>
-        <li v-for="item in state.shops" :key="item._id" draggable="true" @dragstart="drag($event)">
+        <li v-for="item in state.shops" :key="item._id" draggable="true" @dragstart="drag($event)"
+       
+        >
+        <div  v-if="status == 'shopping_list'"> 
+          Test
+          {{ item }}
+           
+        </div>
+
+
             {{ item.shoppingItemName }}
+            {{ item.status }} 
             <div class="item-buttons">
                 <button @click="editShop(state)" class="edit-btn">Edit</button>
                 <button @click="deleteShop(item._id)" class="delete-btn">Delete</button>
@@ -88,15 +98,34 @@
 
 <div class="list">
     <h3 class="list-title">Appointment list</h3>
+
+    <!-- Knap til at åbne modalboks -->
+    <button id="openModalBtn" class="edit-btn">Open Modal</button>
+
+<!-- Modal Box -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>This is the content of the modal box.</p>
+  </div>
+</div>
+
+
     <form class="form">
         <input type="text" v-model="statet.appointmentName" placeholder="Add" class="appointment">
     </form>
     <button @click="newAppo" class="add-card-btn btn">Add</button>
     <ul>
-        <li v-for="item in statet.appos" :key="item._id" draggable="true" @dragstart="drag($event)">
+        <li v-for="item in statet.appos" :key="item._id" draggable="true" @dragstart="drag($event)"
+        >
+       
+          edit: <form class="form">
+        <input type="text" v-model="statet.appointmentName" placeholder="Add" class="appointment">
+    </form>
             {{ item.appointmentName }}
             <div class="item-buttons">
                 <button @click="editAppo(item._id)" class="edit-btn">Edit</button>
+                <!-- lav om til at åbne modal box. og send item._id med + lav en function til at åbne modal box -->
                 <button @click="deleteAppo(item._id)" class="delete-btn">Delete</button>
             </div>
             <pre>{{ item }}</pre> <!-- Denne linje logger item -->
@@ -105,6 +134,13 @@
 </div>
 
 
+<!--  
+  <div v-if="status == 'shopping_list'"> 
+        Test
+        {{ item }}
+           
+  </div> 
+-->
 
 
 
@@ -152,25 +188,13 @@ const { statet, getAllAppo, newAppo, deleteAppo, editAppo } = appoCrud();
 const { stateTodo, getAllTodo, newTodo, deleteTodo, editTodo } = todoCrud();
 
 
+
   onMounted(() => {
     getAllShop();
     getAllAppo();
     getAllTodo();
       })
 
-function allowDrop(ev) {
-  ev.preventDefault();
-}
-
-function drag(ev) {
-  ev.dataTransfer.setData("text", ev.target.id);
-}
-
-function drop(ev) {
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  ev.target.appendChild(document.getElementById(data));
-}
 </script>
 
 
@@ -613,5 +637,41 @@ li {
 
 .menubar .menu-links a:last-child {
   margin-bottom: 0;
+}
+
+.modal {
+  display: none; /* Hide the modal by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* Close button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>

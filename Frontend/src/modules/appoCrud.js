@@ -23,6 +23,7 @@ const getAppo = () => {
         .then(data => {
           statet.value.appos = data;
         });
+        console.log("mongobd", statet.value.appos)
     } 
     catch(error) {
       console.log(error);
@@ -91,7 +92,7 @@ const getAppo = () => {
 
   
 
-  const editAppo = () => {
+  const editAppo = (_id) => {
     const requestOptions = {
       method: "PUT",
       headers: {
@@ -99,19 +100,21 @@ const getAppo = () => {
         "auth-token": statet.value.token
       },
       body: JSON.stringify({
-        appo: statet.value.appointmentName
+        appointmentName: statet.value.appointmentName // TODO CHANGE TO BE SOME DYNAMIC BOX TO EDIT NAME
       })
     }
-    fetch("http://localhost:4000/api/appointment/update/" + appoId.value,
+    fetch(`http://localhost:4000/api/appointment/${_id}`,
       requestOptions)
       .then(getAllAppo)
       .then(() => {
-        router.push('/');
+    
       })
       .catch(error => {
         console.error('Error editing appointment:', error);
       });
   }
+
+
 
 
 
