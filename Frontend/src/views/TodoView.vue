@@ -99,18 +99,6 @@
 <div class="list">
     <h3 class="list-title">Appointment list</h3>
 
-    <!-- Knap til at åbne modalboks -->
-    <button id="openModalBtn" class="edit-btn">Open Modal</button>
-
-<!-- Modal Box -->
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <p>This is the content of the modal box.</p>
-  </div>
-</div>
-
-
     <form class="form">
         <input type="text" v-model="statet.appointmentName" placeholder="Add" class="appointment">
     </form>
@@ -119,22 +107,36 @@
         <li v-for="item in statet.appos" :key="item._id" draggable="true" @dragstart="drag($event)"
         >
        
-          edit: <form class="form">
-        <input type="text" v-model="statet.appointmentName" placeholder="Add" class="appointment">
-    </form>
+          
             {{ item.appointmentName }}
             <div class="item-buttons">
-                <button @click="editAppo(item._id)" class="edit-btn">Edit</button>
+                <button @click="isOpen = true" class="edit-btn">Edit</button>
+                  <div class="modal" v-if="isOpen">
+                      <div>
+                          <h4>Edit</h4>
+                          <form class="form">
+                            <input type="text" v-model="statet.appointmentName" placeholder="Add" class="appointment">
+                          </form>
+                          <button @click="editAppo(item._id)" class="edit-btn">Edit</button>
+                          <button @click="isOpen = false">x</button> 
+                        </div>
+                      </div>
+
                 <!-- lav om til at åbne modal box. og send item._id med + lav en function til at åbne modal box -->
                 <button @click="deleteAppo(item._id)" class="delete-btn">Delete</button>
             </div>
-            <pre>{{ item }}</pre> <!-- Denne linje logger item -->
         </li>
     </ul>
 </div>
 
 
 <!--  
+
+
+  <button @click="editAppo(item._id)" class="edit-btn">Edit</button>
+
+
+
   <div v-if="status == 'shopping_list'"> 
         Test
         {{ item }}
@@ -195,6 +197,7 @@ const { stateTodo, getAllTodo, newTodo, deleteTodo, editTodo } = todoCrud();
     getAllTodo();
       })
 
+const isOpen = ref(false)
 </script>
 
 
@@ -640,38 +643,21 @@ li {
 }
 
 .modal {
-  display: none; /* Hide the modal by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  position: absolute;
+  top:0;
+  left:0;
+  background-color: rgba(0,0,0,0.1);
+  width: 20vw;
+  height: 10vh;
+  display: flex;
+  justify-content:center;
+  align-items: center;
 }
 
-/* Modal content */
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+.modal > div {
+  background-color: white;
+  padding: 50px;
+  border-radius: 10px;
 }
 
-/* Close button */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
 </style>
