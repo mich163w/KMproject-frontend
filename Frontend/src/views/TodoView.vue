@@ -87,7 +87,6 @@
                 <button @click="editShop(state)" class="edit-btn">Edit</button>
                 <button @click="deleteShop(item._id)" class="delete-btn">Delete</button>
             </div>
-            <pre>{{ item }}</pre> <!-- Denne linje logger item -->
         </li>
     </ul>
 </div>
@@ -121,8 +120,6 @@
                           <button @click="isOpen = false">x</button> 
                         </div>
                       </div>
-
-                <!-- lav om til at åbne modal box. og send item._id med + lav en function til at åbne modal box -->
                 <button @click="deleteAppo(item._id)" class="delete-btn">Delete</button>
             </div>
         </li>
@@ -131,12 +128,6 @@
 
 
 <!--  
-
-
-  <button @click="editAppo(item._id)" class="edit-btn">Edit</button>
-
-
-
   <div v-if="status == 'shopping_list'"> 
         Test
         {{ item }}
