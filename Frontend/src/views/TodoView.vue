@@ -69,22 +69,25 @@
     <form class="form">
         <input type="text" v-model="state.shoppingItemName" placeholder="Add" class="shoppingItem">
     </form>
-    <button @click="newShop" class="add-card-btn btn">Add test</button>
+    <button @click="newShop" class="add-card-btn btn">Add</button>
     <ul>
         <li v-for="item in state.shops" :key="item._id" draggable="true" @dragstart="drag($event)"
-       
         >
-        <div  v-if="status == 'shopping_list'"> 
-          Test
-          {{ item }}
-           
-        </div>
-
+       
 
             {{ item.shoppingItemName }}
-            {{ item.status }} 
             <div class="item-buttons">
-                <button @click="editShop(state)" class="edit-btn">Edit</button>
+              <button @click="isOpenShop = true" class="edit-btn">Edit</button>
+                  <div class="modal" v-if="isOpenShop">
+                      <div>
+                          <h4>Edit</h4>
+                          <form class="form">
+                            <input type="text" v-model="state.shoppingItemName" placeholder="Add" class="appointment">
+                          </form>
+                          <button @click="editShop(item._id)" class="edit-btn">Edit</button>
+                          <button @click="isOpenShop = false">x</button> 
+                        </div>
+                      </div>
                 <button @click="deleteShop(item._id)" class="delete-btn">Delete</button>
             </div>
         </li>
@@ -97,27 +100,24 @@
 
 <div class="list">
     <h3 class="list-title">Appointment list</h3>
-
     <form class="form">
         <input type="text" v-model="statet.appointmentName" placeholder="Add" class="appointment">
     </form>
     <button @click="newAppo" class="add-card-btn btn">Add</button>
     <ul>
-        <li v-for="item in statet.appos" :key="item._id" draggable="true" @dragstart="drag($event)"
-        >
-       
-          
+        <li v-for="item in statet.appos" :key="item._id" draggable="true" @dragstart="drag($event)">
             {{ item.appointmentName }}
+
             <div class="item-buttons">
-                <button @click="isOpen = true" class="edit-btn">Edit</button>
-                  <div class="modal" v-if="isOpen">
+                <button @click="isOpenAppo = true" class="edit-btn">Edit</button>
+                  <div class="modal" v-if="isOpenAppo">
                       <div>
                           <h4>Edit</h4>
                           <form class="form">
                             <input type="text" v-model="statet.appointmentName" placeholder="Add" class="appointment">
                           </form>
                           <button @click="editAppo(item._id)" class="edit-btn">Edit</button>
-                          <button @click="isOpen = false">x</button> 
+                          <button @click="isOpenAppo = false">x</button> 
                         </div>
                       </div>
                 <button @click="deleteAppo(item._id)" class="delete-btn">Delete</button>
@@ -147,8 +147,19 @@
     <ul>
         <li v-for="element in stateTodo.todos" :key="element._id" draggable="true" @dragstart="drag($event)">
             {{ element.toDoName }}
-            <div class="item-buttons">
-                <button @click="editTodo(element._id)" class="edit-btn">Edit</button>
+
+              <div class="item-buttons">
+                <button @click="isOpenTodo = true" class="edit-btn">Edit</button>
+                  <div class="modal" v-if="isOpenTodo">
+                      <div>
+                          <h4>Edit</h4>
+                          <form class="form">
+                            <input type="text" v-model="stateTodo.toDoName" placeholder="Add" class="appointment">
+                          </form>
+                          <button @click="editTodo(item._id)" class="edit-btn">Edit</button>
+                          <button @click="isOpenTodo = false">x</button> 
+                        </div>
+                      </div>
                 <button @click="deleteTodo(element._id)" class="delete-btn">Delete</button>
             </div>
         </li>
@@ -188,7 +199,10 @@ const { stateTodo, getAllTodo, newTodo, deleteTodo, editTodo } = todoCrud();
     getAllTodo();
       })
 
-const isOpen = ref(false)
+const isOpenAppo = ref(false)
+const isOpenShop = ref(false)
+const isOpenTodo = ref(false)
+
 </script>
 
 

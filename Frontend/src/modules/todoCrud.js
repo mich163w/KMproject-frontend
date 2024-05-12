@@ -99,24 +99,27 @@ const deleteTodo = (_id) => {
 
 
 
-  const editTodo = () => { 
+  const editTodo = (_id) => { 
     const requestOptions = {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": stateTodo.token
+        "auth-token": stateTodo.value.token
       },
       body: JSON.stringify({
-        todo: stateTodo.value.toDoName
+        toDoName: stateTodo.value.toDoName
       }) 
     }
-    fetch("http://localhost:4000/api/toDo/" + todoId.value, 
+    fetch(`http://localhost:4000/api/toDo/${_id}`,
     requestOptions)
-      .then(getAllTodo())
-      .then(res =>  res.body ) // redundant
-      .then(res => {console.log(res)}) // redundant
-      router.push('/')
-  }
+    .then(getAllTodo)
+    .then(() => {
+  
+    })
+    .catch(error => {
+      console.error('Error editing to do:', error);
+    });
+}
 
 
 
@@ -146,6 +149,5 @@ const deleteTodo = (_id) => {
     deleteTodo,
     editTodo,
   }
-
 }
 export default getTodo

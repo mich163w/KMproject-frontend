@@ -100,7 +100,7 @@ const getAppo = () => {
         "auth-token": statet.value.token
       },
       body: JSON.stringify({
-        appointmentName: statet.value.appointmentName // TODO CHANGE TO BE SOME DYNAMIC BOX TO EDIT NAME
+        appointmentName: statet.value.appointmentName 
       })
     }
     fetch(`http://localhost:4000/api/appointment/${_id}`,

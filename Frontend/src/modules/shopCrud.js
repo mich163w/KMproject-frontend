@@ -94,7 +94,7 @@ const deleteShop = (_id) => {
 
 
 
-  const editShop = () => { 
+  const editShop = (_id) => { 
     const requestOptions = {
       method: "PUT",
       headers: {
@@ -102,15 +102,19 @@ const deleteShop = (_id) => {
         "auth-token": state.token
       },
       body: JSON.stringify({
-        shop: state.value.shoppingItemName
+        shoppingItemName: state.value.shoppingItemName
       }) 
     }
-    fetch("http://localhost:4000/api/shoppingItem/update/" + shopId.value, 
+    fetch(`http://localhost:4000/api/shoppingItem/${_id}`,
     requestOptions)
-      .then(getAllShop())
-      .then(res =>  res.body ) // redundant
-      .then(res => {console.log(res)}) // redundant
-  }
+    .then(getAllShop)
+    .then(() => {
+  
+    })
+    .catch(error => {
+      console.error('Error editing shopping item:', error);
+    });
+}
 
   
 
