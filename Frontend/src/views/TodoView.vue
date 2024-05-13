@@ -100,24 +100,25 @@
 
   <div class="list">
     <h3 class="list-title">Appointment list</h3>
+
     <form class="form">
         <input type="text" v-model="statet.appointmentName" placeholder="Add" class="appointment">
     </form>
+
     <button @click="newAppo" class="add-card-btn btn">Add</button>
+    
     <ul>
         <li v-for="item in statet.appos" :key="item" draggable="true" @dragstart="drag($event)">
             <br>
               {{ item.appointmentName }}
 
             <div class="item-buttons">
-
-
-              
                 <button @click="appoEditModal(item)" class="edit-btn">Edit</button>
                 <button @click="deleteAppo(item._id)" class="delete-btn">Delete</button>
             </div>
         </li>
     </ul>
+    
         <!-- modal start -->
         <div class="modal" v-if="isOpenAppo">
         <div>
@@ -128,31 +129,10 @@
             <button @click="editAppo(statet._id)" class="edit-btn">Edit</button>
             <button @click="appoCloseModal">Close</button>
             
-   
-
-
-<!--                 <h4>Edit</h4>
-                {{ statet.appos }}
-                <form class="form">
-                  <input type="text" v-model="statet.appointmentName" placeholder="Add" class="appointment">
-                </form> 
-                <button @click="editAppo(item._id)" class="edit-btn"> Edit {{ item._id }}</button>
-
-                <button @click="isOpenAppo = false"> x </button>  -->
-              </div>
-            </div>
-            <!-- modal end -->
-  
+          </div>
         </div>
+      </div>
 
-
-<!--  
-  <div v-if="status == 'shopping_list'"> 
-        Test
-        {{ item }}
-           
-  </div> 
--->
 
 
 
@@ -164,26 +144,31 @@
     </form>
     <button @click="newTodo" class="add-card-btn btn">Add</button>
     <ul>
-        <li v-for="element in stateTodo.todos" :key="element._id" draggable="true" @dragstart="drag($event)">
-            {{ element.toDoName }}
+        <li v-for="item in stateTodo.todos" :key="item" draggable="true" @dragstart="drag($event)">
+            {{ item.toDoName }}
 
-              s<div class="item-buttons">
-                <button @click="isOpenTodo = true" class="edit-btn">Edit</button>
-                  <div class="modal" v-if="isOpenTodo">
-                      <div>
-                          <h4>Edit</h4>
-                          <form class="form">
-                            <input type="text" v-model="stateTodo.toDoName" placeholder="Add" class="appointment">
-                          </form>
-                          <button @click="editTodo(item._id)" class="edit-btn">Edit</button>
-                          <button @click="isOpenTodo = false">x</button> 
-                        </div>
-                      </div>
-                <button @click="deleteTodo(element._id)" class="delete-btn">Delete</button>
+              <div class="item-buttons">
+                <button @click="toDoEditModal(item)" class="edit-btn">Edit</button>
+                <button @click="deleteTodo(item._id)" class="delete-btn">Delete</button>
             </div>
         </li>
     </ul>
-  </div>
+
+      <!-- modal start -->
+      <div class="modal" v-if="isOpenTodo">
+        <div>
+            <h4 class="modalHeader">Edit</h4>
+            <form class="form">
+                <input type="text" v-model="stateTodo.toDoName" placeholder="Add" class="appointment">
+            </form> 
+            <button @click="editTodo(stateTodo._id)" class="edit-btn">Edit</button>
+            <button @click="toDoCloseModal">Close</button>
+            
+          </div>
+        </div>
+      </div>
+
+
 
       
 
@@ -237,12 +222,12 @@ const shopCloseModal = () => {
 
 
 const toDoEditModal = (item) => {
-    statet.value = item;
-    isOpenAppo.value = !isOpenAppo.value;
+    stateTodo.value = item;
+    isOpenTodo.value = !isOpenTodo.value;
 };
 
 const toDoCloseModal = () => {
-    isOpenAppo.value = false;
+    isOpenTodo.value = false;
 };
 
   onMounted(() => {
