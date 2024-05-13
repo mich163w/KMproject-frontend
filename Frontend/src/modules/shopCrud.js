@@ -99,7 +99,7 @@ const deleteShop = (_id) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": state.token
+        "auth-token": state.value.token
       },
       body: JSON.stringify({
         shoppingItemName: state.value.shoppingItemName
