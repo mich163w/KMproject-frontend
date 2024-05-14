@@ -11,8 +11,8 @@
         <div class="sidenav">
             <div class="profile">
                 <img src="../assets/donut_02.jpg" alt="Profile Picture" width="100" height="100">
-                <div class="name">Brugernavn</div>
-                <div class="email">email@email.com</div>
+                <div class="name"></div>
+                <div class="email"></div>
                 <div class="sidenav-url">
                     <div class="url">
                         <a href="#profile" class="active">Profil</a>
@@ -30,36 +30,45 @@
             <h2>Information</h2>
             <div class="card">
                 <div class="card-body">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" placeholder="name">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="email">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" placeholder="username">
-                    <label for="password">Password</label>
-                    <input type="password" id="Password" placeholder="password">
+                    <label for="name">Name:</label>
+                    <input type="text" v-model="userState.name" id="name" placeholder="Enter your name">
+                    <label for="email">Email:</label>
+                    <input type="email" v-model="userState.email" id="email" placeholder="Enter your email">
+                    <label for="currentPassword">Current Password:</label>
+                    <input type="password" v-model="currentPassword" id="currentPassword" placeholder="Enter your current password">
+                    <label for="newPassword">New Password:</label>
+                    <input type="password" v-model="newPassword" id="newPassword" placeholder="Enter your new password">
+                    <button @click="editUser()">Save Changes</button>
+                    <button @click="editPassword(currentPassword, newPassword)">Change Password</button>
                 </div>
+
             </div>
         </div>
-        <h2>Log ud</h2>
-    <button @click="logOut" class="logO">Log out</button>
+        <button @click="logOut" class="logO">Log out</button>
         <!-- Slut på Main Content -->
     </div>
-  
+
 </template>
 
 <script setup>
 
 import { useRouter } from 'vue-router';
+import userCrud from '../modules/userCrud';
+import { onMounted } from 'vue';
+
+
+const { userState, editUser,getUserInfo, editPassword } = userCrud();
 
 const router = useRouter();
 
 const logOut = () => {
-  localStorage.removeItem('auth-token'); // Fjern autentifikationstokenen fra localStorage
-  localStorage.removeItem('userId'); // Fjern også brugerens id, hvis det er nødvendigt
-  router.push('/'); // Omdiriger brugeren til login-siden
+    localStorage.removeItem('auth-token'); // Fjern autentifikationstokenen fra localStorage
+    localStorage.removeItem('userId'); // Fjern også brugerens id, hvis det er nødvendigt
+    router.push('/'); // Omdiriger brugeren til login-siden
 };
-
+onMounted(() => {
+    getUserInfo();
+      })
 </script>
 
 <style scoped>
@@ -186,5 +195,11 @@ input {
     padding: 10px;
     background: none;
     width: 60%;
+    color:white;
+}
+button {
+    background-color: #898989;
+    color: white;
+    
 }
 </style>
