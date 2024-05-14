@@ -55,7 +55,7 @@ const router = useRouter();
         localStorage.setItem('auth-token', output.data.token)
         localStorage.setItem('userId', output.data.userId)
         console.log("token: " + output.data.token)
-        router.push('/board')
+        router.push('/todo')
       })
       .catch((err) => {
         alert(err.message)
