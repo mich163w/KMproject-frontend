@@ -69,41 +69,69 @@
     <form class="form">
         <input type="text" v-model="state.shoppingItemName" placeholder="Add" class="shoppingItem">
     </form>
-    <button @click="newShop" class="add-card-btn btn">Add test</button>
+    <button @click="newShop" class="add-card-btn btn">Add</button>
     <ul>
-        <li v-for="item in state.shops" :key="item._id" draggable="true" @dragstart="drag($event)">
+        <li v-for="item in state.shops" :key="item" draggable="true" @dragstart="drag($event)">
+       <br>
             {{ item.shoppingItemName }}
+        
             <div class="item-buttons">
-                <button @click="editShop(item)" class="edit-btn">Edit</button>
+              <button @click="shopEditModal(item)" class="edit-btn">Edit</button>
                 <button @click="deleteShop(item._id)" class="delete-btn">Delete</button>
             </div>
-            <pre>{{ item }}</pre> <!-- Denne linje logger item -->
-        </li>
-    </ul>
-</div>
+          </li>
+        </ul>
+
+        <div class="modal" v-if="isOpenShop">
+          <div>
+            <h4 class="modalHeader">Edit</h4>
+              <form class="form">
+                <input type="text" v-model="state.shoppingItemName" placeholder="Add" class="appointment">
+              </form>                      
+                <button @click="editShop(state._id)" class="edit-btn">Edit</button>
+                <button @click="isOpenShop = false">x</button> 
+          </div>
+        </div>
+      </div>
+
+ 
 
 
 
-
-
-<div class="list">
+  <div class="list">
     <h3 class="list-title">Appointment list</h3>
+
     <form class="form">
         <input type="text" v-model="statet.appointmentName" placeholder="Add" class="appointment">
     </form>
-    <button @click="newAppo" class="add-card-btn btn">Add fisk</button>
+
+    <button @click="newAppo" class="add-card-btn btn">Add</button>
+    
     <ul>
-        <li v-for="item in statet.appos" :key="item._id" draggable="true" @dragstart="drag($event)">
-            {{ item.appointmentName }}
+        <li v-for="item in statet.appos" :key="item" draggable="true" @dragstart="drag($event)">
+            <br>
+              {{ item.appointmentName }}
+
             <div class="item-buttons">
-                <button @click="editAppo(item._id)" class="edit-btn">Edit</button>
+                <button @click="appoEditModal(item)" class="edit-btn">Edit</button>
                 <button @click="deleteAppo(item._id)" class="delete-btn">Delete</button>
             </div>
-            <pre>{{ item }}</pre> <!-- Denne linje logger item -->
         </li>
     </ul>
-</div>
-
+    
+        <!-- modal start -->
+        <div class="modal" v-if="isOpenAppo">
+        <div>
+            <h4 class="modalHeader">Edit</h4>
+            <form class="form">
+                <input type="text" v-model="statet.appointmentName" placeholder="Add" class="appointment">
+            </form> 
+            <button @click="editAppo(statet._id)" class="edit-btn">Edit</button>
+            <button @click="appoCloseModal">Close</button>
+            
+          </div>
+        </div>
+      </div>
 
 
 
@@ -116,15 +144,31 @@
     </form>
     <button @click="newTodo" class="add-card-btn btn">Add</button>
     <ul>
-        <li v-for="element in stateTodo.todos" :key="element._id" draggable="true" @dragstart="drag($event)">
-            {{ element.toDoName }}
-            <div class="item-buttons">
-                <button @click="editTodo(element._id)" class="edit-btn">Edit</button>
-                <button @click="deleteTodo(element._id)" class="delete-btn">Delete</button>
+        <li v-for="item in stateTodo.todos" :key="item" draggable="true" @dragstart="drag($event)">
+            {{ item.toDoName }}
+
+              <div class="item-buttons">
+                <button @click="toDoEditModal(item)" class="edit-btn">Edit</button>
+                <button @click="deleteTodo(item._id)" class="delete-btn">Delete</button>
             </div>
         </li>
     </ul>
-  </div>
+
+      <!-- modal start -->
+      <div class="modal" v-if="isOpenTodo">
+        <div>
+            <h4 class="modalHeader">Edit</h4>
+            <form class="form">
+                <input type="text" v-model="stateTodo.toDoName" placeholder="Add" class="appointment">
+            </form> 
+            <button @click="editTodo(stateTodo._id)" class="edit-btn">Edit</button>
+            <button @click="toDoCloseModal">Close</button>
+            
+          </div>
+        </div>
+      </div>
+
+
 
       
 
@@ -151,6 +195,40 @@ const { state, getAllShop, deleteShop, editShop,newShop } = shopCrud();
 const { statet, getAllAppo, newAppo, deleteAppo, editAppo } = appoCrud();
 const { stateTodo, getAllTodo, newTodo, deleteTodo, editTodo } = todoCrud();
 
+const selectedItem = ref(null);
+
+const appoEditModal = (item) => {
+    statet.value = item;
+    isOpenAppo.value = !isOpenAppo.value;
+};
+
+const appoCloseModal = () => {
+    isOpenAppo.value = false;
+
+};
+
+
+
+const shopEditModal = (item) => {
+    state.value = item;
+    isOpenShop.value = !isOpenShop.value;
+};
+
+const shopCloseModal = () => {
+        isOpenShop.value = false;
+    };
+
+
+
+
+const toDoEditModal = (item) => {
+    stateTodo.value = item;
+    isOpenTodo.value = !isOpenTodo.value;
+};
+
+const toDoCloseModal = () => {
+    isOpenTodo.value = false;
+};
 
   onMounted(() => {
     getAllShop();
@@ -158,19 +236,10 @@ const { stateTodo, getAllTodo, newTodo, deleteTodo, editTodo } = todoCrud();
     getAllTodo();
       })
 
-function allowDrop(ev) {
-  ev.preventDefault();
-}
+const isOpenAppo = ref(false)
+const isOpenShop = ref(false)
+const isOpenTodo = ref(false)
 
-function drag(ev) {
-  ev.dataTransfer.setData("text", ev.target.id);
-}
-
-function drop(ev) {
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  ev.target.appendChild(document.getElementById(data));
-}
 </script>
 
 
@@ -614,4 +683,27 @@ li {
 .menubar .menu-links a:last-child {
   margin-bottom: 0;
 }
+
+.modal {
+  position: absolute;
+  top:20;
+  left:0;
+  background-color: rgba(0,0,0,0);
+  width: 20vw;
+  height: 10vh;
+  display: flex;
+  justify-content:center;
+  align-items: center;
+}
+
+.modal > div {
+  background-color: white;
+  padding: 50px;
+  border-radius: 10px;
+}
+
+.modalHeader {
+  color:black;
+}
+
 </style>

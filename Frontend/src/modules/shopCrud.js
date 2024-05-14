@@ -22,6 +22,7 @@ const getShop = () => {
       .then(data => {
         state.value.shops = data
       });
+      console.log("mongo shop", state.value.shops)
     }
     catch(error) {
       console.log(error) // do different error to showcase - line 15 wrong name + line13 with incorrect path
@@ -93,23 +94,27 @@ const deleteShop = (_id) => {
 
 
 
-  const editShop = () => { 
+  const editShop = (_id) => { 
     const requestOptions = {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": state.token
+        "auth-token": state.value.token
       },
       body: JSON.stringify({
-        shop: state.value.shoppingItemName
+        shoppingItemName: state.value.shoppingItemName
       }) 
     }
-    fetch("http://localhost:4000/api/shoppingItem/update/" + shopId.value, 
+    fetch(`http://localhost:4000/api/shoppingItem/${_id}`,
     requestOptions)
-      .then(getAllShop())
-      .then(res =>  res.body ) // redundant
-      .then(res => {console.log(res)}) // redundant
-  }
+    .then(getAllShop)
+    .then(() => {
+  
+    })
+    .catch(error => {
+      console.error('Error editing shopping item:', error);
+    });
+}
 
   
 
