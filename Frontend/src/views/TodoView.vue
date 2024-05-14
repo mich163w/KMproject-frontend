@@ -74,7 +74,7 @@
         <li v-for="item in state.shops" :key="item._id" draggable="true" @dragstart="drag($event)">
             {{ item.shoppingItemName }}
             <div class="item-buttons">
-                <button @click="editShop(state)" class="edit-btn">Edit</button>
+                <button @click="editShop(item)" class="edit-btn">Edit</button>
                 <button @click="deleteShop(item._id)" class="delete-btn">Delete</button>
             </div>
             <pre>{{ item }}</pre> <!-- Denne linje logger item -->
@@ -91,7 +91,7 @@
     <form class="form">
         <input type="text" v-model="statet.appointmentName" placeholder="Add" class="appointment">
     </form>
-    <button @click="newAppo" class="add-card-btn btn">Add</button>
+    <button @click="newAppo" class="add-card-btn btn">Add fisk</button>
     <ul>
         <li v-for="item in statet.appos" :key="item._id" draggable="true" @dragstart="drag($event)">
             {{ item.appointmentName }}

@@ -44,6 +44,13 @@ const loginValidation = (data) => {
         }
     }
 
+    const changePasswordValidation = (data) => {
+        const schema = Joi.object({
+            email: Joi.string().min(3).max(255).required(),
+            currentPassword: Joi.string().min(8).max(255).required(),
+            newPassword: Joi.string().min(8).max(255).required()
+        });
+        return schema.validate(data);
+}
 
-
-module.exports = { registerValidation, loginValidation, verifyToken };
+module.exports = { registerValidation, loginValidation, verifyToken, changePasswordValidation };
