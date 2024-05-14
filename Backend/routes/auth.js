@@ -9,8 +9,6 @@ const Joi = require("joi");
 // /registration
 // post request because we want to send data to the api and eventually also to the database to save registering a user
 router.post("/register", async (req, res) => {
-
-
     // validate user input (name, email, password) 
     const { error } = registerValidation(req.body);
 
@@ -20,16 +18,12 @@ router.post("/register", async (req, res) => {
     }
 
 
-
-
     // check if email is already registered
     const emailExist = await User.findOne({ email: req.body.email });
 
     if (emailExist) {
         return res.status(400).json({ error: "Email already exists" })
     }
-
-
 
     // hash the password
     const salt = await bcrypt.genSalt(10);
@@ -56,9 +50,6 @@ router.post("/register", async (req, res) => {
 })
 
 
-
-
-
 // /login
 router.post("/login", async (req, res) => {
 
@@ -72,7 +63,6 @@ router.post("/login", async (req, res) => {
 
     // if login info is valid, find the user
     const user = await User.findOne({ email: req.body.email });
-
 
     // throw error if the email is wrong (user does not exist in DB)
     if (!user) {
@@ -151,25 +141,34 @@ router.get("/profile", async (req, res) => {
 
 
 router.put('/changes/:userId', async (req, res) => {
-    // Validér inputdata fra brugeren (f.eks. ny e-mail)
-    //const { error } = loginValidation(req.body);
-    //if (error) return res.status(400).json({ error: error.details[0].message });
+
 
     try {
         // Hent brugerens eksisterende oplysninger fra databasen
         const user = await User.findById(req.params.userId);
         if (!user) return res.status(404).json({ error: 'User not found' });
 
+        if(req.body.newPassword) {
+            if (!req.body.currentPassword) return res.status(400).json({ error: 'Current password is required' });  
+            const isPasswordValid = await bcrypt.compare(req.body.currentPassword, user.password);  
+            if (!isPasswordValid) return res.status(400).json({ error: 'Current password is incorrect' });  
+        }
+
         // Opdater brugerens loginoplysninger baseret på de modtagne data
         user.email = req.body.email || user.email; // Opdater kun, hvis der er sendt en ny e-mail
         user.name = req.body.name || user.name;
+        if (req.body.newPassword) {
+            const salt = await bcrypt.genSalt(10);
+            user.password = await bcrypt.hash(req.body.newPassword, salt);
+        }
         // Gem ændringerne i databasen
         const updatedUser = await user.save();
         res.json(updatedUser);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
-})
+});
+
 
 router.put("/password/:userId", async (req, res) => {
     // Validér inputdata fra brugeren
@@ -199,18 +198,6 @@ router.put("/password/:userId", async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 })
-
-// Ændring af e-mailadresse
-const changeEmail = async () => {
-    const newEmail = document.getElementById('email').value;
-
-    try {
-        const response = await axios.put(`/api/user/login/${userId}`, { email: newEmail });
-        console.log(response.data); // Udskriv svar fra backend (f.eks. bekræftelse)
-    } catch (error) {
-        console.error(error.response.data); // Håndter fejl, hvis der opstår en fejl under anmodningen
-    }
-};
 
 
 module.exports = router;

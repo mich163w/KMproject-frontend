@@ -5,15 +5,15 @@ const getUser = () => {
 
   const route = useRoute();
   const router = useRouter();
-  const shopId = computed(() => route.params.id)
+  const userId = computed(() => route.params.id)
 
   const userState = ref({
-   id: '',
-   name: '',
-   email: ''
+    id: '',
+    name: '',
+    email: ''
   })
 
-  const editUser = () => { 
+  const editUser = (userId, email, name, currentPassword, newPassword) => { 
     const requestOptions = {
       method: "PUT",
       headers: {
@@ -21,17 +21,19 @@ const getUser = () => {
         "auth-token": localStorage.getItem('auth-token')
       },
       body: JSON.stringify({
-        email: userState.value.email,
-        name: userState.value.name
+        email: email,
+        name: name,
+        currentPassword,
+        newPassword
       }) 
     }
-    fetch("http://localhost:4000/api/user/changes/" + '663dbbd983ac2f2ae1c48ef4', 
+    fetch(`http://localhost:4000/api/user/changes/${userId}`, 
     requestOptions)
-      .then(res =>  res.body ) // redundant
-      .then(res => {console.log(res)}) // redundant
+      .then(res => res.json())
+      .then(res => {console.log(res)}) 
   }
 
-  const editPassword = (currentPassword, newPassword) => { 
+  const editPassword = (userId, currentPassword, newPassword) => { 
     const requestOptions = {
       method: "PUT",
       headers: {
@@ -44,12 +46,11 @@ const getUser = () => {
         newPassword: newPassword
       }) 
     }
-    fetch("http://localhost:4000/api/user/password/" + '663dbbd983ac2f2ae1c48ef4', 
+    fetch(`http://localhost:4000/api/user/password/${userId}` , 
     requestOptions)
-      .then(res =>  res.body ) // redundant
-      .then(res => {console.log(res)}) // redundant
+      .then(res => res.json())
+      .then(res => {console.log(res)}) 
   }
-
 
   const getUserInfo = () => { 
     const requestOptions = {
@@ -61,10 +62,8 @@ const getUser = () => {
     }
     fetch("http://localhost:4000/api/user/profile", 
     requestOptions)
-      .then(res =>  res.json() ) // redundant
+      .then(res => res.json())
       .then(data => {
-    
-        console.log(data.body)
         userState.value.id = data.id
         userState.value.name = data.name
         userState.value.email = data.email
@@ -75,7 +74,9 @@ const getUser = () => {
     editUser,
     userState,
     getUserInfo,
-    editPassword
+    editPassword,
+    userId
   }
 } 
+
 export default getUser
