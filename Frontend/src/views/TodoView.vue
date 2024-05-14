@@ -190,12 +190,9 @@ import shopCrud from '../modules/shopCrud';
 import appoCrud from '../modules/appoCrud';
 import todoCrud from '../modules/todoCrud';
 
-
 const { state, getAllShop, deleteShop, editShop,newShop } = shopCrud();
 const { statet, getAllAppo, newAppo, deleteAppo, editAppo } = appoCrud();
 const { stateTodo, getAllTodo, newTodo, deleteTodo, editTodo } = todoCrud();
-
-const selectedItem = ref(null);
 
 const appoEditModal = (item) => {
     statet.value = item;
@@ -207,8 +204,6 @@ const appoCloseModal = () => {
 
 };
 
-
-
 const shopEditModal = (item) => {
     state.value = item;
     isOpenShop.value = !isOpenShop.value;
@@ -217,9 +212,6 @@ const shopEditModal = (item) => {
 const shopCloseModal = () => {
         isOpenShop.value = false;
     };
-
-
-
 
 const toDoEditModal = (item) => {
     stateTodo.value = item;
@@ -247,7 +239,6 @@ const isOpenTodo = ref(false)
 
 
 <style scoped>
-/* Importer style.css */
 *,
 *::before,
 *::after {
@@ -279,7 +270,6 @@ body {
   outline-color: rgb(229, 227, 222);
 }
 
-/* Masthead */
 
 .masthead {
   flex-basis: 4rem;
@@ -287,8 +277,6 @@ body {
   align-items: center;
   padding: 0 0.8rem;
   margin-bottom: 10px;
-  /*   background-color: #cdcabc59;
-box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.1); */
 }
 
 .masthead .btn {
@@ -308,14 +296,12 @@ box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.1); */
 }
 
 .boards-btn {
-  /* flex-basis: 9rem; */
   font-size: 1.4rem;
   font-weight: 700;
   color: #fff;
   background-color: #4d4d4d28;
   border-radius: 15px;
-  /*   margin-right: 0.8rem;
-padding: 0.6rem 0.8rem; */
+
 }
 
 .menubar {
@@ -323,18 +309,9 @@ padding: 0.6rem 0.8rem; */
   top: 0;
   right: 0;
   width: 200px;
-  /* Adjust width as needed */
   height: 100vh;
-  /* Make it full height */
   background-color: #333;
-  /* Example background color */
   color: #fff;
-  /* Example text color */
-}
-
-.boards-btn-icon {
-  /*   font-size: 1.7rem; */
-  /* padding-right: 1.2rem; */
 }
 
 .icon {
@@ -440,8 +417,6 @@ p {
   font-size: 14px;
 }
 
-/* Board info bar */
-
 .board-info-bar {
   flex-basis: 3rem;
   display: flex;
@@ -489,8 +464,6 @@ p {
   white-space: nowrap;
 }
 
-/* Lists */
-
 .lists-container::-webkit-scrollbar {
   height: 2.4rem;
 }
@@ -504,7 +477,6 @@ p {
 .lists-container {
   display: flex;
   align-items: start;
-  /* padding: 0 0.8rem 0.8rem; */
   overflow-x: auto;
   height: calc(100vh - 8.6rem);
 }
@@ -536,7 +508,6 @@ p {
 
 .list-items,
 ul {
-  /* min-height: 100px; */
   flex: 1;
   display: flex;
   flex-direction: column;
