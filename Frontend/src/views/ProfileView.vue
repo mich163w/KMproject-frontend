@@ -5,25 +5,15 @@
             <img src="../assets/space.jpg" alt="Topbar background image" class="topbar-bg">
 
         </div>
-        <!-- Slut på topbar -->
 
         <!-- Sidenav -->
         <div class="sidenav">
             <div class="profile">
-                <img src="../assets/donut_02.jpg" alt="Profile Picture" width="100" height="100">
+                <img src="../assets/profile-placeholder.jpeg" alt="Profile Picture" width="100" height="100">
                 <div class="name"></div>
                 <div class="email"></div>
-                <div class="sidenav-url">
-                    <div class="url">
-                        <a href="#profile" class="active">Profil</a>
-                    </div>
-                    <div class="url">
-                        <a href="#settings">Indstillinger</a>
-                    </div>
-                </div>
             </div>
         </div>
-        <!-- Slut på Sidenav -->
 
         <!-- Main Content -->
         <div class="main">
@@ -38,14 +28,14 @@
                     <input type="password" v-model="currentPassword" id="currentPassword" placeholder="Enter your current password">
                     <label for="newPassword">New Password:</label>
                     <input type="password" v-model="newPassword" id="newPassword" placeholder="Enter your new password">
-                    <button @click="editUser()">Save Changes</button>
-                    <button @click="editPassword(currentPassword, newPassword)">Change Password</button>
+                    <div class="buttons">
+                    <button @click="updateUser">Save Changes</button>
+                    <!-- <button @click="editPassword(currentPassword, newPassword)">Change Password</button> -->
                 </div>
-
+                </div>
             </div>
         </div>
         <button @click="logOut" class="logO">Log out</button>
-        <!-- Slut på Main Content -->
     </div>
 
 </template>
@@ -60,6 +50,18 @@ import { onMounted } from 'vue';
 const { userState, editUser,getUserInfo, editPassword } = userCrud();
 
 const router = useRouter();
+
+const updateUser = () => {
+
+    if (currentPassword.value === '' || newPassword.value === '') {
+        editUser(userState.value.id, userState.value.email, userState.value.name);
+        return;
+    }
+    if (newPassword.value.length >= 8 && currentPassword.value.length > 0) {
+        editUser(userState.value.id, userState.value.email, userState.value.name, currentPassword.value, newPassword.value);
+    }
+    
+};
 
 const logOut = () => {
     localStorage.removeItem('auth-token'); // Fjern autentifikationstokenen fra localStorage
@@ -109,15 +111,12 @@ body {
 
 /* Sidenav */
 .sidenav {
-
     width: 250px;
-    height: 100vh;
-    /* Fyld hele højden af skærmen */
+    display: flow;
     position: fixed;
     top: 0;
     left: 0;
     padding-top: 50px;
-    /* Juster topafstand efter topbarhøjden */
 }
 
 .profile {
@@ -129,46 +128,12 @@ body {
     box-shadow: 0px 0px 5px 1px grey;
 }
 
-.name,
-.email {
-    margin-top: 10px;
-}
-
-.sidenav-url {
-    margin-top: 20px;
-}
-
-.url {
-    margin-bottom: 10px;
-}
-
-.url a {
-    display: block;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    color: #afafaf;
-    border: 2px solid #afafaf;
-    border-radius: 15px;
-}
-
-.url a.active,
-.url a:hover {
-    color: #afafaf;
-    border: 2px solid #afafaf;
-    border-radius: 15px;
-    background-color: #c3c3c330;
-}
 
 label {
     text-align: left;
 }
 
 /* Main Content */
-.main {
-    margin-left: 250px;
-    /* Bredde af sidenav */
-    padding: 20px;
-}
 
 .main h2 {
     color: #c3c3c3;
@@ -179,7 +144,6 @@ label {
 .card {
     border-radius: 10px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-    padding: 20px;
 }
 
 .card-body {
@@ -200,6 +164,17 @@ input {
 button {
     background-color: #898989;
     color: white;
-    
+    margin: 5px;
+    width: 180px;
+}
+
+.buttons {
+    display: flex;
+}
+
+.logO {
+    background-color: #898989;
+    color: white;
+    width: 100%;
 }
 </style>
