@@ -8,13 +8,19 @@
 
         <!-- Sidenav -->
         <div class="sidenav">
+            
             <div class="profile">
                 <img src="../assets/user.png" alt="Profile Picture" width="100" height="100">
                 <div class="name"></div>
                 <div class="email"></div>
             </div>
+            
         </div>
-
+        <div>
+                <router-link to="/todo" class="back-btn btn" aria-label="Back" style="color: white; float: left; margin-left: 20px;">
+                    Tilbage
+                </router-link>
+            </div>
         <!-- Main Content -->
         <div class="main">
             <h2>Information</h2>
@@ -25,13 +31,14 @@
                     <label for="email">Email:</label>
                     <input type="email" v-model="userState.email" id="email" placeholder="Enter your email">
                     <label for="currentPassword">Current Password:</label>
-                    <input type="password" v-model="currentPassword" id="currentPassword" placeholder="Enter your current password">
+                    <input type="password" v-model="currentPassword" id="currentPassword"
+                        placeholder="Enter your current password">
                     <label for="newPassword">New Password:</label>
                     <input type="password" v-model="newPassword" id="newPassword" placeholder="Enter your new password">
                     <div class="buttons">
-                    <button @click="updateUser">Save Changes</button>
-                    <!-- <button @click="editPassword(currentPassword, newPassword)">Change Password</button> -->
-                </div>
+                        <button @click="updateUser">Save Changes</button>
+                        <!-- <button @click="editPassword(currentPassword, newPassword)">Change Password</button> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -47,7 +54,7 @@ import userCrud from '../modules/userCrud';
 import { onMounted } from 'vue';
 
 
-const { userState, editUser,getUserInfo, editPassword } = userCrud();
+const { userState, editUser, getUserInfo, editPassword } = userCrud();
 
 const router = useRouter();
 
@@ -60,7 +67,7 @@ const updateUser = () => {
     if (newPassword.value.length >= 8 && currentPassword.value.length > 0) {
         editUser(userState.value.id, userState.value.email, userState.value.name, currentPassword.value, newPassword.value);
     }
-    
+
 };
 
 const logOut = () => {
@@ -70,7 +77,7 @@ const logOut = () => {
 };
 onMounted(() => {
     getUserInfo();
-      })
+})
 </script>
 
 <style scoped>
@@ -159,8 +166,9 @@ input {
     padding: 10px;
     background: none;
     width: 60%;
-    color:white;
+    color: white;
 }
+
 button {
     background-color: #898989;
     color: white;
