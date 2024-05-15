@@ -9,7 +9,7 @@
         <!-- Sidenav -->
         <div class="sidenav">
             <div class="profile">
-                <img src="../assets/profile-placeholder.jpeg" alt="Profile Picture" width="100" height="100">
+                <img src="../assets/user.png" alt="Profile Picture" width="100" height="100">
                 <div class="name"></div>
                 <div class="email"></div>
             </div>
