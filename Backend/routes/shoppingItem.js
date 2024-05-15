@@ -2,6 +2,7 @@ const router = require("express").Router();
 const { verifyToken } = require("../validation");
 const shoppingItem = require("../models/shoppingItem");
 const { STATES } = require("mongoose");
+const { update } = require("../models/user");
 
 
 
@@ -104,6 +105,27 @@ router.delete("/:id", verifyToken, (req, res) => {
 
         })
         .catch(err => { res.status(500).send({ message: "Error deleting shoppingItem with id=" + id }); })
+});
+
+
+// Route to update item positions
+router.post('/updatePositions', async (req, res) => {
+    const { updatedItems } = req.body;
+
+    console.log("recieved item: ", updatedItems)
+
+    try {
+        // Update positions in the database
+        await Promise.all(updatedItems.map(async (item) => {
+            console.log(item)
+            await shoppingItem.findByIdAndUpdate(item._id, { position: item.position });
+        }));
+
+        res.status(200).send("OK")
+    } catch (error) {
+        console.error('Error updating item positions:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 

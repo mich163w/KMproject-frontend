@@ -67,10 +67,10 @@
     </form>
     <button @click="newShop" class="add-card-btn btn">Add</button>
     <div @dragover.prevent @drop="drop($event, 'shops', destinationIndex)">
-      <ul >
+      <ul>
   <li v-for="(item, index) in state.shops" :key="index" draggable="true"  @dragover="destinationIndex = index" @dragstart="drag($event, 'shops', index)">
     <br>
-    {{index}}: {{ item.shoppingItemName }}
+    {{ item.shoppingItemName }}
 
     <div class="item-buttons">
       <button @click="shopEditModal(item)" class="edit-btn">Edit</button>
@@ -106,8 +106,9 @@
 
     <button @click="newAppo" class="add-card-btn btn">Add</button>
     
-    <ul @dragover.prevent @drop="drop($event, 'appos', 'destinationIndex')">
-  <li v-for="(item, index) in statet.appos" :key="item._id" draggable="true" @dragstart="drag($event, 'appos', index)">
+    <div @dragover.prevent @drop="drop($event, 'appos', destinationIndex)">
+    <ul>
+  <li v-for="(item, index) in statet.appos" :key="index" draggable="true" @dragover="destinationIndex = index" @dragstart="drag($event, 'appos', index)">
     <br>
     {{ item.appointmentName }}
 
@@ -117,6 +118,7 @@
     </div>
   </li>
 </ul>
+</div>
     
         <!-- modal -->
         <div class="modal" v-if="isOpenAppo">
@@ -143,8 +145,9 @@
     </form>
     <button @click="newTodo" class="add-card-btn btn">Add</button>
 
-    <ul @dragover.prevent @drop="drop($event, 'todos', 'destinationIndex')">
-  <li v-for="(item, index) in stateTodo.todos" :key="item._id" draggable="true" @dragstart="drag($event, 'todos', index)">
+    <div @dragover.prevent @drop="drop($event, 'todos', destinationIndex)">
+    <ul>
+  <li v-for="(item, index) in stateTodo.todos" :key="index" draggable="true"  @dragover="destinationIndex = index" @dragstart="drag($event, 'todos', index)">
     {{ item.toDoName }}
 
     <div class="item-buttons">
@@ -153,6 +156,7 @@
     </div>
   </li>
 </ul>
+</div>
       <!-- modal -->
       <div class="modal" v-if="isOpenTodo">
         <div>
@@ -189,9 +193,10 @@ import shopCrud from '../modules/shopCrud';
 import appoCrud from '../modules/appoCrud';
 import todoCrud from '../modules/todoCrud';
 
-const { state, getAllShop, deleteShop, editShop,newShop } = shopCrud();
+const { state, getAllShop, deleteShop, editShop, newShop, updateItemPositions } = shopCrud();
 const { statet, getAllAppo, newAppo, deleteAppo, editAppo } = appoCrud();
 const { stateTodo, getAllTodo, newTodo, deleteTodo, editTodo } = todoCrud();
+
 
 const appoEditModal = (item) => {
     statet.value = item;
@@ -247,99 +252,39 @@ const drop = (event, destinationListName, destinationIndex) => {
 
   console.log(destinationListName, destinationIndex)
 
-  let item
-
-  //if (listName === destinationListName) return; // Prevent moving within the same list
-  
+  let item  
    // Add the item to the destination list
   switch (destinationListName) {
     case 'shops':// Get the item from the source list
-   item= state.value.shops[index];
+   item = state.value.shops[index];
   
   // Remove the item from the source list
   state.value.shops.splice(index, 1);
   
   // Add the item to the destination list
   //state.value.shops.push(item);
-
   state.value.shops.splice(destinationIndex, 0, item);
-      break;
-    case 'appos':// Get the item from the source list
-   item = statet.value.appos[index];
-  
-  // Remove the item from the source list
-  statet.value.appos.splice(index, 1);
-  
-  // Add the item to the destination list
-  //statet.value.appos.push(item);
 
+  state.value.shops.forEach((item, index) => {
+    item.position = index
+  });
+  updateItemPositions(state.value.shops);
+    break;
+    case 'appos':
+  item = statet.value.appos[index];
+  statet.value.appos.splice(index, 1);
   statet.value.appos.splice(destinationIndex, 0, item);
       break;
-    case 'todos':
-      stateTodo.todos.splice(destinationIndex, 0, item); // Insert into destination list
-      break;
+      case 'todos':
+  item = stateTodo.value.todos[index];
+  stateTodo.value.todos.splice(index, 1);
+  stateTodo.value.todos.splice(destinationIndex, 0, item);
+  break;
+
     default:
       break;
   }
-
-  
 };
-
-// // Drag function
-// const drag = (event, listName, index) => {
-
-
-//   console.log("Test: ", index)
-
-//   event.dataTransfer.setData('TaskIndex', index);
-// };
-
-// // Drop function
-// const drop = (event, destinationListName, destinationIndex) => {
-//   event.preventDefault();
-
-
-
-//   // const { listName, index } = JSON.parse(event.dataTransfer.getData('TaskIndex'));
-  
-//   // // Get the item from the source list
-//   // let item;
-  
-//   // switch (listName) {
-//   //   case 'shops':
-//   //     item = state.shops[index];
-//   //     console.log(index, item)
-//   //     state.shops.splice(index, 1); // Remove from source list
-//   //     break;
-//   //   case 'appos':
-//   //     item = statet.appos[index];
-//   //     console.log(index, item)
-//   //     statet.appos.splice(index, 1); // Remove from source list
-//   //     break;
-//   //   case 'todos':
-//   //     item = stateTodo.todos[index];
-//   //     console.log(index, item)
-//   //     stateTodo.todos.splice(index, 1); // Remove from source list
-//   //     break;
-//   //   default:
-//   //     break;
-//   // }
-
-//   // Add the item to the destination list
-//   // switch (destinationListName) {
-//   //   case 'shops':
-//   //     state.shops.splice(destinationIndex, 0, item); // Insert into destination list
-//   //     break;
-//   //   case 'appos':
-//   //     statet.appos.splice(destinationIndex, 0, item); // Insert into destination list
-//   //     break;
-//   //   case 'todos':
-//   //     stateTodo.todos.splice(destinationIndex, 0, item); // Insert into destination list
-//   //     break;
-//   //   default:
-//   //     break;
-//   // }
-// };
 
 </script>
 

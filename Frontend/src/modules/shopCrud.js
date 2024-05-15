@@ -20,6 +20,11 @@ const getShop = () => {
        await fetch(`http://localhost:4000/api/shoppingItem/${userId}`)
       .then(res => res.json())
       .then(data => {
+
+        console.log(data)
+
+        data = data.sort((a, b) =>  a.position - b.position)
+
         state.value.shops = data
       });
       console.log("mongo shop", state.value.shops)
@@ -32,34 +37,67 @@ const getShop = () => {
 
 
 
-const newShop = () => { 
-  const userId = localStorage.getItem('userId'); 
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": localStorage.getItem('auth-token') // Hent autentifikationstokenen fra localStorage
-      },
-      body: JSON.stringify({
-        shoppingItemName: state.value.shoppingItemName,
-        user: userId
-      }) 
-    };
+  const newShop = () => {
+    const userId = localStorage.getItem('userId');
+
+    // Fetch the highest position value for the user's shopping items
+    fetch(`http://localhost:4000/api/shoppingItem/highestPosition?userId=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            const highestPosition = data.highestPosition || 0; // If there are no items, start position from 0
+            const newPosition = highestPosition + 1;
+
+            const requestOptions = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "auth-token": localStorage.getItem('auth-token')
+                },
+                body: JSON.stringify({
+                    shoppingItemName: state.value.shoppingItemName,
+                    user: userId,
+                    position: newPosition // Set the position for the new item
+                })
+            };
+
+            // Send POST request to create new shopping item with the calculated position
+            return fetch("http://localhost:4000/api/shoppingItem", requestOptions);
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('New shoppingItem added:', data);
+            getAllShop(); // Assuming this function retrieves all shopping items after adding a new one
+        })
+        .catch(error => {
+            console.error('Error adding new shoppingItem:', error);
+        });
+};
+
   
-    fetch("http://localhost:4000/api/shoppingItem", requestOptions)
-    .then(data => {
-      console.log('New shoppingItem added:', data);
-      getAllShop();
-    })
-    .catch(error => {
-      console.error('Error adding new shoppingItem:', error);
-    });
-  };
-  
 
 
 
 
+const updateItemPositions = async (itemArray) => {
+  try {
+      const response = await fetch('http://localhost:4000/api/shoppingItem/updatePositions', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ updatedItems: itemArray })
+      });
+
+      if (!response.ok) {
+          throw new Error('Failed to update item positions');
+      }
+
+      console.log('Item positions updated successfully');
+      
+  } catch (error) {
+      console.error('Error updating item positions:', error.message);
+  }
+};
 
 
 
@@ -144,6 +182,7 @@ const deleteShop = (_id) => {
     newShop,
     deleteShop,
     editShop,
+    updateItemPositions,
   }
 
 }
