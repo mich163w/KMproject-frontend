@@ -21,6 +21,11 @@ const getAppo = () => {
       await fetch(`http://localhost:4000/api/appointment/${userId}`) 
         .then(res => res.json())
         .then(data => {
+
+          console.log(data)
+
+          data = data.sort((a, b) =>  a.position - b.position)
+
           statet.value.appos = data;
         });
         console.log("mongobd", statet.value.appos)
@@ -35,28 +40,41 @@ const getAppo = () => {
 
 
   const newAppo = () => {
-    const userId = localStorage.getItem('userId'); 
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": localStorage.getItem('auth-token') 
-      },
-      body: JSON.stringify({
-        appointmentName: statet.value.appointmentName,
-        user: userId 
-      })
-    };
+    const userId = localStorage.getItem('userId');
   
-    fetch("http://localhost:4000/api/appointment/", requestOptions)
+    // Fetch the highest position value for the user's appointments
+    fetch(`http://localhost:4000/api/appointment/highestPosition?userId=${userId}`)
+      .then(response => response.json())
+      .then(data => {
+        const highestPosition = data.highestPosition || 0; // If there are no items, start position from 0
+        const newPosition = highestPosition + 1;
+  
+        const requestOptions = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": localStorage.getItem('auth-token')
+          },
+          body: JSON.stringify({
+            appointmentName: statet.value.appointmentName,
+            user: userId,
+            position: newPosition // Set the position for the new appointment
+          })
+        };
+  
+        // Send POST request to create new appointment with the calculated position
+        return fetch("http://localhost:4000/api/appointment", requestOptions);
+      })
+      .then(response => response.json())
       .then(data => {
         console.log('New appointment added:', data);
-        getAllAppo();
+        getAllAppo(); // Assuming this function retrieves all appointments after adding a new one
       })
       .catch(error => {
         console.error('Error adding new appointment:', error);
       });
   };
+  
 
 
 
@@ -87,6 +105,26 @@ const getAppo = () => {
   };
 
 
+  const updateAppoPositions = async (itemArray) => {
+    try {
+        const response = await fetch('http://localhost:4000/api/appointment/updatePositions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ updatedItems: itemArray })
+        });
+  
+        if (!response.ok) {
+            throw new Error('Failed to update item positions');
+        }
+  
+        console.log('Item positions updated successfully');
+        
+    } catch (error) {
+        console.error('Error updating item positions:', error.message);
+    }
+  };
 
 
 
@@ -144,6 +182,7 @@ const getAppo = () => {
     newAppo,
     deleteAppo,
     editAppo,
+    updateAppoPositions,
   }
 }
 

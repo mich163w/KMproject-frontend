@@ -191,9 +191,9 @@ import shopCrud from '../modules/shopCrud';
 import appoCrud from '../modules/appoCrud';
 import todoCrud from '../modules/todoCrud';
 
-const { state, getAllShop, deleteShop, editShop, newShop, updateItemPositions } = shopCrud();
-const { statet, getAllAppo, newAppo, deleteAppo, editAppo } = appoCrud();
-const { stateTodo, getAllTodo, newTodo, deleteTodo, editTodo } = todoCrud();
+const { state, getAllShop, deleteShop, editShop, newShop, updateShopPositions } = shopCrud();
+const { statet, getAllAppo, newAppo, deleteAppo, editAppo, updateAppoPositions } = appoCrud();
+const { stateTodo, getAllTodo, newTodo, deleteTodo, editTodo, updateTodoPositions } = todoCrud();
 
 
 const appoEditModal = (item) => {
@@ -266,17 +266,29 @@ const drop = (event, destinationListName, destinationIndex) => {
   state.value.shops.forEach((item, index) => {
     item.position = index
   });
-  updateItemPositions(state.value.shops);
+  updateShopPositions(state.value.shops);
     break;
+    
     case 'appos':
   item = statet.value.appos[index];
   statet.value.appos.splice(index, 1);
   statet.value.appos.splice(destinationIndex, 0, item);
+
+  statet.value.appos.forEach((item, index) => {
+    item.position = index
+  });
+  updateAppoPositions(statet.value.appos);
       break;
+
       case 'todos':
   item = stateTodo.value.todos[index];
   stateTodo.value.todos.splice(index, 1);
   stateTodo.value.todos.splice(destinationIndex, 0, item);
+
+  stateTodo.value.todos.forEach((item, index) => {
+    item.position = index
+  });
+  updateTodoPositions(stateTodo.value.todos);
   break;
 
     default:

@@ -20,6 +20,11 @@ const getTodo = () => {
       await fetch(`http://localhost:4000/api/toDo/${userId}`)
       .then(res => res.json())
       .then(data => {
+
+        console.log(data)
+
+        data = data.sort((a, b) =>  a.position - b.position)
+      
         stateTodo.value.todos = data
       })
     }
@@ -33,37 +38,42 @@ const getTodo = () => {
 
 
 
-const newTodo = () => { 
-  const userId = localStorage.getItem('userId');
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": localStorage.getItem('auth-token') 
-      },
-      body: JSON.stringify({
-        toDoName: stateTodo.value.toDoName,
-        user: userId 
-      }) 
-    };
+  const newTodo = () => {
+    const userId = localStorage.getItem('userId');
   
-    fetch("http://localhost:4000/api/toDo/", requestOptions)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
+    // Fetch the highest position value for the user's todos
+    fetch(`http://localhost:4000/api/toDo/highestPosition?userId=${userId}`)
+      .then(response => response.json())
       .then(data => {
-        // Håndter data her, hvis det er nødvendigt
-        console.log('New toDo added:', data);
-        getAllTodo(); // Kald getAllTodo efter succesfuld oprettelse af butik
+        const highestPosition = data.highestPosition || 0; // If there are no items, start position from 0
+        const newPosition = highestPosition + 1;
+  
+        const requestOptions = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": localStorage.getItem('auth-token')
+          },
+          body: JSON.stringify({
+            toDoName: stateTodo.value.toDoName,
+            user: userId,
+            position: newPosition // Set the position for the new todo
+          })
+        };
+  
+        // Send POST request to create new todo with the calculated position
+        return fetch("http://localhost:4000/api/toDo", requestOptions);
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('New todo added:', data);
+        getAllTodo(); // Assuming this function retrieves all todos after adding a new one
       })
       .catch(error => {
-        console.error('Error adding new Todo:', error);
-    
+        console.error('Error adding new todo:', error);
       });
   };
+  
   
 
 
@@ -97,6 +107,26 @@ const deleteTodo = (_id) => {
 };
 
 
+const updateTodoPositions = async (itemArray) => {
+  try {
+      const response = await fetch('http://localhost:4000/api/todo/updatePositions', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ updatedItems: itemArray })
+      });
+
+      if (!response.ok) {
+          throw new Error('Failed to update item positions');
+      }
+
+      console.log('Item positions updated successfully');
+      
+  } catch (error) {
+      console.error('Error updating item positions:', error.message);
+  }
+};
 
 
   const editTodo = (_id) => { 
@@ -148,6 +178,7 @@ const deleteTodo = (_id) => {
     newTodo,
     deleteTodo,
     editTodo,
+    updateTodoPositions,
   }
 }
 export default getTodo

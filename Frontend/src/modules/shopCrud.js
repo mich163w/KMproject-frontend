@@ -78,7 +78,7 @@ const getShop = () => {
 
 
 
-const updateItemPositions = async (itemArray) => {
+const updateShopPositions = async (itemArray) => {
   try {
       const response = await fetch('http://localhost:4000/api/shoppingItem/updatePositions', {
           method: 'POST',
@@ -182,7 +182,7 @@ const deleteShop = (_id) => {
     newShop,
     deleteShop,
     editShop,
-    updateItemPositions,
+    updateShopPositions,
   }
 
 }
