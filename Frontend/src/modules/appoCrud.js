@@ -1,5 +1,6 @@
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 const getAppo = () => {
 
@@ -18,7 +19,7 @@ const getAppo = () => {
   const getAllAppo = async () => {
     try {
       const userId = localStorage.getItem('userId'); 
-      await fetch(`http://localhost:4000/api/appointment/${userId}`) 
+      await fetch(`${baseURL}appointment/${userId}`) 
         .then(res => res.json())
         .then(data => {
 
@@ -43,7 +44,7 @@ const getAppo = () => {
     const userId = localStorage.getItem('userId');
   
     // Fetch the highest position value for the user's appointments
-    fetch(`http://localhost:4000/api/appointment/highestPosition?userId=${userId}`)
+    fetch(`${baseURL}/appointment/highestPosition?userId=${userId}`)
       .then(response => response.json())
       .then(data => {
         const highestPosition = data.highestPosition || 0; // If there are no items, start position from 0
@@ -63,7 +64,7 @@ const getAppo = () => {
         };
   
         // Send POST request to create new appointment with the calculated position
-        return fetch("http://localhost:4000/api/appointment", requestOptions);
+        return fetch("${baseURL}appointment", requestOptions);
       })
       .then(response => response.json())
       .then(data => {
