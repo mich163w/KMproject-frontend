@@ -69,11 +69,13 @@ const getAppo = () => {
       .then(data => {
         console.log('New appointment added:', data);
         getAllAppo(); // Assuming this function retrieves all appointments after adding a new one
+        newAppointmentName = ''; // Clear the input field after adding the item
       })
       .catch(error => {
         console.error('Error adding new appointment:', error);
       });
-  };
+};
+
   
 
 
