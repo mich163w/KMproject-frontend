@@ -7,12 +7,12 @@
 
 
       <div class="login_register">
-        <a href="
-  /
-  " class="login" target="blank">Login</a>
-        <a href="
-  /signup
-  " class="register" target="blank">Signup</a>
+        <router-link to="/">
+          <div class="login" target="blank">Login></div>
+        </router-link>
+        <router-link to="/signup">
+          <div class="register"target="blank">Signup</div>
+        </router-link>
       </div>
 
       <!-- FORMUALR -->
