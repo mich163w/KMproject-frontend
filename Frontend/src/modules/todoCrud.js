@@ -42,7 +42,7 @@ const getTodo = () => {
     const userId = localStorage.getItem('userId');
   
     // Fetch the highest position value for the user's todos
-    fetch(`${baseURL}api/toDo/highestPosition?userId=${userId}`)
+    fetch(`${baseURL}toDo/highestPosition?userId=${userId}`)
       .then(response => response.json())
       .then(data => {
         const highestPosition = data.highestPosition || 0; 
