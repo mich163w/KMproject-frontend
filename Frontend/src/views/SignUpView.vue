@@ -8,7 +8,7 @@
 
       <div class="login_register">
         <router-link to="/">
-          <div class="login" target="blank">Login></div>
+          <div class="login" target="blank">Login</div>
         </router-link>
         <router-link to="/signup">
           <div class="register"target="blank">Signup</div>
@@ -127,13 +127,13 @@ body {
   width: 50%;
 }
 
-.login_register a.login {
+.login_register .login {
   border-radius: 15px;
   background-color: transparent;
   color: black;
 }
 
-.login_register a.register {
+.login_register .register {
   border-radius: 15px;
   background: linear-gradient(-90deg, #988f82, #bdb9b4);
   color: white;

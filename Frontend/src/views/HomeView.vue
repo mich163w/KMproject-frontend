@@ -7,8 +7,8 @@
       <h2>Login Form</h2>
 
       <div class="login_register">
-        <router-link to="/">
-          <div class="login" target="blank">Login></div>
+      <router-link to="/">
+          <div class="login" target="blank">Login</div>
         </router-link>
         <router-link to="/signup">
           <div class="register"target="blank">Signup</div>
@@ -127,6 +127,10 @@ body {
   margin: 20px 0;
 }
 
+.register{
+  color: black;
+}
+
 .login_register a {
   font-size: 1em;
   padding: 10px 55px;
@@ -134,16 +138,15 @@ body {
   width: 50%;
 }
 
-.login_register a.login {
-  border-radius: 15px;
-  background: linear-gradient(-90deg, #988f82, #bdb9b4);
-  color: white;
-}
-
-.login_register a.register {
+.login_register .login {
   border-radius: 15px;
   background-color: transparent;
-  color: black;
+}
+
+.login {
+  color: white;
+  border-radius: 15px;
+  background: linear-gradient(-90deg, #988f82, #bdb9b4);
 }
 
 .form {
