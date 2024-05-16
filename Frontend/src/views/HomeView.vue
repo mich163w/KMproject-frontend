@@ -42,6 +42,7 @@ const login = async () => {
       email: email.value,
       password: password.value
     }
+    console.log(baseURL)
     await fetch(`${baseURL}user/login`, {
       method: 'POST',
       headers: {
