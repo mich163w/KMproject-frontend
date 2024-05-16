@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build-only": "vite build"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
