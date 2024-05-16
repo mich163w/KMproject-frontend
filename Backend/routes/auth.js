@@ -95,18 +95,13 @@ router.post("/login", async (req, res) => {
 
 
     )
-    const loggedInUser = {
-        id: user._id,
-        name: user.name,
-        email: user.email
-    };
+
     const userId = user.id
 
     // attach auth token to header
     res.header("auth-token", token).json({
         error: null,
-        data: { token, userId },
-        loggedInUser: loggedInUser
+        data: { token, userId }
     });
 })
 

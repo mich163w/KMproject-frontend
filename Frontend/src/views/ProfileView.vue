@@ -8,19 +8,20 @@
 
         <!-- Sidenav -->
         <div class="sidenav">
-            
+
             <div class="profile">
                 <img src="../assets/user.png" alt="Profile Picture" width="100" height="100">
                 <div class="name"></div>
                 <div class="email"></div>
             </div>
-            
+
         </div>
         <div>
-                <router-link to="/todo" class="back-btn btn" aria-label="Back" style="color: white; float: left; margin-left: 20px;">
-                    Tilbage
-                </router-link>
-            </div>
+            <router-link to="/todo" class="back-btn btn" aria-label="Back"
+                style="color: white; float: left; margin-left: 20px;">
+                Tilbage
+            </router-link>
+        </div>
         <!-- Main Content -->
         <div class="main">
             <h2>Information</h2>
@@ -37,7 +38,6 @@
                     <input type="password" v-model="newPassword" id="newPassword" placeholder="Enter your new password">
                     <div class="buttons">
                         <button @click="updateUser">Save Changes</button>
-                        <!-- <button @click="editPassword(currentPassword, newPassword)">Change Password</button> -->
                     </div>
                 </div>
             </div>
