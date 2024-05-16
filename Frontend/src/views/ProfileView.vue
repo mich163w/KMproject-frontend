@@ -37,7 +37,6 @@
                     <input type="password" v-model="newPassword" id="newPassword" placeholder="Enter your new password">
                     <div class="buttons">
                         <button @click="updateUser">Save Changes</button>
-                        <!-- <button @click="editPassword(currentPassword, newPassword)">Change Password</button> -->
                     </div>
                 </div>
             </div>
@@ -71,9 +70,9 @@ const updateUser = () => {
 };
 
 const logOut = () => {
-    localStorage.removeItem('auth-token'); // Fjern autentifikationstokenen fra localStorage
-    localStorage.removeItem('userId'); // Fjern også brugerens id, hvis det er nødvendigt
-    router.push('/'); // Omdiriger brugeren til login-siden
+    localStorage.removeItem('auth-token'); 
+    localStorage.removeItem('userId'); 
+    router.push('/'); 
 };
 onMounted(() => {
     getUserInfo();
@@ -81,7 +80,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Globale stilarter */
 body {
     margin: 0;
     padding: 0;

@@ -6,7 +6,7 @@ const { registerValidation, loginValidation, changePasswordValidation } = requir
 const jwt = require('jsonwebtoken');
 const Joi = require("joi");
 
-// /registration
+// registration
 // post request because we want to send data to the api and eventually also to the database to save registering a user
 router.post("/register", async (req, res) => {
     // validate user input (name, email, password) 
@@ -28,10 +28,6 @@ router.post("/register", async (req, res) => {
     // hash the password
     const salt = await bcrypt.genSalt(10);
     const password = await bcrypt.hash(req.body.password, salt);
-
-    // Se hvordan koden ændres med salt og hashing i terminalen når man laver en bruger
-    // console.log("salt: " + salt);
-    // console.log("Pass: " + password);
 
     // create a user object and save in the DB
     const userObject = new User({

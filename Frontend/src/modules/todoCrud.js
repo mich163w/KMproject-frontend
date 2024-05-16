@@ -29,7 +29,7 @@ const getTodo = () => {
       })
     }
     catch(error) {
-      console.log(error) // do different error to showcase - line 15 wrong name + line13 with incorrect path
+      console.log(error) 
     }
   }
 
@@ -45,7 +45,7 @@ const getTodo = () => {
     fetch(`http://localhost:4000/api/toDo/highestPosition?userId=${userId}`)
       .then(response => response.json())
       .then(data => {
-        const highestPosition = data.highestPosition || 0; // If there are no items, start position from 0
+        const highestPosition = data.highestPosition || 0; 
         const newPosition = highestPosition + 1;
   
         const requestOptions = {
@@ -57,7 +57,7 @@ const getTodo = () => {
           body: JSON.stringify({
             toDoName: stateTodo.value.toDoName,
             user: userId,
-            position: newPosition // Set the position for the new todo
+            position: newPosition 
           })
         };
   
@@ -67,7 +67,7 @@ const getTodo = () => {
       .then(response => response.json())
       .then(data => {
         console.log('New todo added:', data);
-        getAllTodo(); // Assuming this function retrieves all todos after adding a new one
+        getAllTodo(); 
       })
       .catch(error => {
         console.error('Error adding new todo:', error);

@@ -44,7 +44,7 @@ const getShop = () => {
     fetch(`http://localhost:4000/api/shoppingItem/highestPosition?userId=${userId}`)
         .then(response => response.json())
         .then(data => {
-            const highestPosition = data.highestPosition || 0; // If there are no items, start position from 0
+            const highestPosition = data.highestPosition || 0;
             const newPosition = highestPosition + 1;
 
             const requestOptions = {
@@ -56,7 +56,7 @@ const getShop = () => {
                 body: JSON.stringify({
                     shoppingItemName: state.value.shoppingItemName,
                     user: userId,
-                    position: newPosition // Set the position for the new item
+                    position: newPosition 
                 })
             };
 

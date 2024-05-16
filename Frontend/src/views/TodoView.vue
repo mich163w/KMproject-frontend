@@ -202,9 +202,9 @@ const {  userState, getUserInfo } = userCrud();
 const router = useRouter();
 
 const logOut = () => {
-    localStorage.removeItem('auth-token'); // Fjern autentifikationstokenen fra localStorage
-    localStorage.removeItem('userId'); // Fjern også brugerens id, hvis det er nødvendigt
-    router.push('/'); // Omdiriger brugeren til login-siden
+    localStorage.removeItem('auth-token'); 
+    localStorage.removeItem('userId'); 
+    router.push('/');
 };
 
 const appoEditModal = (item) => {
@@ -266,14 +266,13 @@ const drop = (event, destinationListName, destinationIndex) => {
   let item  
    // Add the item to the destination list
   switch (destinationListName) {
-    case 'shops':// Get the item from the source list
+    case 'shops':
    item = state.value.shops[index];
   
   // Remove the item from the source list
   state.value.shops.splice(index, 1);
   
   // Add the item to the destination list
-  //state.value.shops.push(item);
   state.value.shops.splice(destinationIndex, 0, item);
 
   state.value.shops.forEach((item, index) => {

@@ -9,7 +9,7 @@ const { STATES } = require("mongoose");
 
 // CRUD Operations
 
-// Create product - post
+// Create product 
 router.post("/", /*verifyToken,*/ (req, res) => {
 
     // Body, parsed as json
@@ -18,7 +18,6 @@ router.post("/", /*verifyToken,*/ (req, res) => {
     // passed into insertMany function of mongoose and inserted into the database
     appointment.insertMany(data)
 
-        // responds with the data
         .then(data => { res.status(201).send(data); })
         .catch(err => { res.status(500).send({ message: err.message }); })
 
@@ -27,14 +26,12 @@ router.post("/", /*verifyToken,*/ (req, res) => {
 
 
 
-// Read all products - get
-// Create product - post  "/" = /api/appointment/
+// Read all products
 router.get("/", (req, res) => {
 
     appointment.find()
 
-        // responds with the data
-        .then(data => { res.send(data); })
+    .then(data => { res.send(data); })
         .catch(err => { res.status(500).send({ message: err.message }); })
 
 });
@@ -55,7 +52,6 @@ router.get("/:author", (req, res) => {
 
 
 
-// cars/type/           
 router.get("/:id", (req, res) => {
 
     appointment.findById(req.params.id)
@@ -70,7 +66,7 @@ router.get("/:id", (req, res) => {
 
 
 
-// Update specific product - put
+// Update specific product
 router.put("/:id", (req, res) => {
 
     const id = req.params.id;
@@ -92,7 +88,7 @@ router.put("/:id", (req, res) => {
 
 
 
-// Delete specific product - delete
+// Delete specific product 
 router.delete("/:id", verifyToken, (req, res) => {
 
     const id = req.params.id;

@@ -4,23 +4,11 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const app = express();
-// const { verifyToken } = require("./validation"); --> har ikke lyst til det er på alle og så tilføj linje 55 i stedet for 54
-
 
 // CORS npm package
 app.use(cors({
     "origin": "*"
 }));
-
-
-/*
-app.use(function (req, res, next) {
-    res.header("Acces-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-Width, Content-Type, Accept");
-    next();
-});
-
-*/
 
 // swagger dependencies
 const swaggerUi = require("swagger-ui-express");
@@ -37,19 +25,10 @@ const shoppingItemRoutes = require("./routes/shoppingItem");
 const toDoRoutes = require("./routes/toDo");
 const boardRoutes = require("./routes/board");
 
-
 require("dotenv-flow").config();
-
-
-
-
-
 
 // parse request of content-type JSON
 app.use(bodyParser.json());
-
-
-
 
 mongoose.set('strictQuery', false);
 mongoose.connect
@@ -63,18 +42,13 @@ mongoose.connect
 ).catch(error => console.log("Error connecting to MongoDB:" + error));
 mongoose.connection.once("open", () => console.log("Succesfully connected to MongoDB"));
 
-
-
-
-
 // route
 app.get("/api/welcome", (req, res) => {
 
     res.status(200).send({message: "Welcome to the MEN RESTful API"});
 })
 
-
-// post, put, delete - CRUD
+// CRUD
 app.use("/api/appointment", appointmentRoutes);
 app.use("/api/shoppingItem", shoppingItemRoutes);
 app.use("/api/board", boardRoutes);
