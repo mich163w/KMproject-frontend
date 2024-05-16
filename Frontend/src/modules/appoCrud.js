@@ -70,7 +70,6 @@ const getAppo = () => {
       .then(data => {
         console.log('New appointment added:', data);
         getAllAppo(); 
-        newAppointmentName = ''; 
       })
       .catch(error => {
         console.error('Error adding new appointment:', error);
