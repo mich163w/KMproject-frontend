@@ -68,8 +68,8 @@ const getAppo = () => {
       .then(response => response.json())
       .then(data => {
         console.log('New appointment added:', data);
-        getAllAppo(); // Assuming this function retrieves all appointments after adding a new one
-        newAppointmentName = ''; // Clear the input field after adding the item
+        getAllAppo(); 
+        newAppointmentName = ''; 
       })
       .catch(error => {
         console.error('Error adding new appointment:', error);
@@ -82,13 +82,13 @@ const getAppo = () => {
 
 
   const deleteAppo = (_id) => {
-    const authToken = localStorage.getItem('auth-token'); // Hent autentifikationstokenen fra localStorage
+    const authToken = localStorage.getItem('auth-token'); 
   
     fetch(`http://localhost:4000/api/appointment/${_id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": authToken // Tilføj autentifikationstokenen til headers
+        "auth-token": authToken 
       }
     })
       .then(response => {

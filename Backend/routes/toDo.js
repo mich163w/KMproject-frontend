@@ -7,8 +7,8 @@ const toDo = require("../models/toDo");
 
 // CRUD Operations
 
-// Create product - post
-router.post("/", /*verifyToken,*/ (req, res) => {
+// Create product
+router.post("/", verifyToken, (req, res) => {
 
     // Body, parsed as json
     let data = req.body;
@@ -25,8 +25,7 @@ router.post("/", /*verifyToken,*/ (req, res) => {
 
 
 
-// Read all products - get
-// Create product - post  "/" = /api/toDo/
+// Read all products
 router.get("/", (req, res) => {
 
     toDo.find()
@@ -51,7 +50,6 @@ router.get("/:author", (req, res) => {
 
 
 
-// cars/type/           
 router.get("/:id", (req, res) => {
 
     toDo.findById(req.params.id)
@@ -66,7 +64,7 @@ router.get("/:id", (req, res) => {
 
 
 
-// Update specific product - put
+// Update specific product
 router.put("/:id", (req, res) => {
 
     const id = req.params.id;
@@ -88,7 +86,7 @@ router.put("/:id", (req, res) => {
 
 
 
-// Delete specific product - delete
+// Delete specific product
 router.delete("/:id", verifyToken, (req, res) => {
 
     const id = req.params.id;

@@ -20,7 +20,6 @@ const getBoard = () => {
       .then(res => res.json())
       .then(data => {
         stateBoard.value.boards = data
-        // debugger
       })
     }
     catch(error) {

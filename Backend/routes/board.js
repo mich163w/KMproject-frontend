@@ -5,8 +5,8 @@ const Board = require("../models/board");
 
 
 
-// Create board - post
-router.post("/", /*verifyToken, */ (req, res) => {
+// Create board
+router.post("/", verifyToken,  (req, res) => {
     let data = req.body;
 
       // passed into insertMany function of mongoose and inserted into the database
@@ -19,7 +19,7 @@ router.post("/", /*verifyToken, */ (req, res) => {
 
 
 
-// Read all boards - get
+// Read all boards 
 router.get("/", (req, res) => {
     Board.find()
         .then(data => { res.send(data); })
@@ -30,7 +30,7 @@ router.get("/", (req, res) => {
 
 
 
-// Read specific board - get
+// Read specific board 
 router.get("/:id", (req, res) => {
     Board.findById(req.params.id)
         .then(data => { res.send(data); })
@@ -41,7 +41,7 @@ router.get("/:id", (req, res) => {
 
 
 
-// Update specific board - put
+// Update specific board
 router.put("/:id", (req, res) => {
     const id = req.params.id;
     Board.findByIdAndUpdate(id, req.body)
@@ -59,7 +59,7 @@ router.put("/:id", (req, res) => {
 
 
 
-// Delete specific board - delete
+// Delete specific board 
 router.delete("/:id", verifyToken, (req, res) => {
     const id = req.params.id;
     Board.findByIdAndDelete(id)
