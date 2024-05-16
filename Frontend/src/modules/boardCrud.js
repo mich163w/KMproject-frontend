@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-
+const baseURL = import.meta.env.VITE_BASE_URL;
 const getBoard = () => {
 
   const route = useRoute();
@@ -16,7 +16,7 @@ const getBoard = () => {
 
   const getAllBoard = async () => {
     try {
-       await fetch("http://localhost:4000/api/board/")
+       await fetch(`${baseURL}board/`)
       .then(res => res.json())
       .then(data => {
         stateBoard.value.boards = data
@@ -44,7 +44,7 @@ const newBoard = () => {
       }) 
     };
   
-    fetch("http://localhost:4000/api/board/", requestOptions)
+    fetch(`${baseURL}board/`, requestOptions)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -69,7 +69,7 @@ const newBoard = () => {
 
 
   const deleteBoard = (_id) => {
-    fetch("http://localhost:4000/api/board/delete/" + _id, { method: "DELETE"})
+    fetch(`${baseURL}board/delete/` + _id, { method: "DELETE"})
     .then(getAllBoard)
     .catch(error => {
       console.error('Error deleting board:', error);
@@ -90,7 +90,7 @@ const newBoard = () => {
         board: stateBoard.value.boardName
       }) 
     }
-    fetch("http://localhost:4000/api/board/update/" + boardId.value, 
+    fetch(`${baseURL}board/update/` + boardId.value, 
     requestOptions)
       .then(getAllBoard())
       .then(res =>  res.body ) // redundant
@@ -103,7 +103,7 @@ const newBoard = () => {
   const board = ref({})
   const getSpecificBoard = async () => {
     try {
-      fetch("http://localhost:4000/api/board/")
+      fetch(`${baseURL}board/`)
         .then(res =>  res.json() ) 
         .then(data => {
             board.value = data.filter(t => t._id === boardId.value)

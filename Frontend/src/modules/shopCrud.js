@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-
+const baseURL = import.meta.env.VITE_BASE_URL;
 const getShop = () => {
 
   const route = useRoute();
@@ -17,7 +17,7 @@ const getShop = () => {
   const getAllShop = async () => {
     try {
       const userId = localStorage.getItem('userId'); 
-       await fetch(`http://localhost:4000/api/shoppingItem/${userId}`)
+       await fetch(`${baseURL}shoppingItem/${userId}`)
       .then(res => res.json())
       .then(data => {
 
@@ -41,7 +41,7 @@ const getShop = () => {
     const userId = localStorage.getItem('userId');
 
     // Fetch the highest position value for the user's shopping items
-    fetch(`http://localhost:4000/api/shoppingItem/highestPosition?userId=${userId}`)
+    fetch(`${baseURL}shoppingItem/highestPosition?userId=${userId}`)
         .then(response => response.json())
         .then(data => {
             const highestPosition = data.highestPosition || 0;
@@ -61,7 +61,7 @@ const getShop = () => {
             };
 
             // Send POST request to create new shopping item with the calculated position
-            return fetch("http://localhost:4000/api/shoppingItem", requestOptions);
+            return fetch(`${baseURL}shoppingItem`, requestOptions);
         })
         .then(response => response.json())
         .then(data => {
@@ -80,7 +80,7 @@ const getShop = () => {
 
 const updateShopPositions = async (itemArray) => {
   try {
-      const response = await fetch('http://localhost:4000/api/shoppingItem/updatePositions', {
+      const response = await fetch(`${baseURL}shoppingItem/updatePositions`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ const updateShopPositions = async (itemArray) => {
 const deleteShop = (_id) => {
   const authToken = localStorage.getItem('auth-token'); 
 
-  fetch(`http://localhost:4000/api/shoppingItem/${_id}`, {
+  fetch(`${baseURL}shoppingItem/${_id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -143,7 +143,7 @@ const deleteShop = (_id) => {
         shoppingItemName: state.value.shoppingItemName
       }) 
     }
-    fetch(`http://localhost:4000/api/shoppingItem/${_id}`,
+    fetch(`${baseURL}shoppingItem/${_id}`,
     requestOptions)
     .then(getAllShop)
     .then(() => {
@@ -160,7 +160,7 @@ const deleteShop = (_id) => {
   const shop = ref({})
   const getSpecificShop = async () => {
     try {
-      fetch("http://localhost:4000/api/shoppingItem/")
+      fetch(`${baseURL}shoppingItem/`)
         .then(res =>  res.json() ) 
         .then(data => {
             shop.value = data.filter(t => t._id === shopId.value)

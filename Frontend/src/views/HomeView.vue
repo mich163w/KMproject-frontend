@@ -28,21 +28,22 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { useRoute , useRouter } from 'vue-router'
-
+import { useRoute, useRouter } from 'vue-router'
+const baseURL = import.meta.env.VITE_BASE_URL;
 const route = useRoute();
 const router = useRouter();
-  
-  const email = ref('')
-  const password = ref ('')
 
-  const login = async () => {
-  try {    const data = {
+const email = ref('')
+const password = ref('')
+
+const login = async () => {
+  try {
+    const data = {
       email: email.value,
       password: password.value
     }
-    await fetch('http://localhost:4000/api/user/login', {
-      method: 'POST', 
+    await fetch(`${baseURL}user/login`, {
+      method: 'POST',
       headers: {
         'content-type': 'application/json'
       },
@@ -59,12 +60,13 @@ const router = useRouter();
       })
       .catch((err) => {
         alert(err.message)
-      })}
-  catch(error) {
+      })
+  }
+  catch (error) {
     console.log(error.message)
   }
 
-  }
+}
 
 
 
@@ -189,4 +191,3 @@ body {
   color: #5881D0;
 }
 </style>
-

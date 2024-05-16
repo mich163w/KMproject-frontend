@@ -64,7 +64,7 @@ const getAppo = () => {
         };
   
         // Send POST request to create new appointment with the calculated position
-        return fetch("${baseURL}appointment", requestOptions);
+        return fetch(`${baseURL}appointment`, requestOptions);
       })
       .then(response => response.json())
       .then(data => {
@@ -85,7 +85,7 @@ const getAppo = () => {
   const deleteAppo = (_id) => {
     const authToken = localStorage.getItem('auth-token'); 
   
-    fetch(`http://localhost:4000/api/appointment/${_id}`, {
+    fetch(`${baseURL}appointment/${_id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -110,7 +110,7 @@ const getAppo = () => {
 
   const updateAppoPositions = async (itemArray) => {
     try {
-        const response = await fetch('http://localhost:4000/api/appointment/updatePositions', {
+        const response = await fetch(`${baseURL}appointment/updatePositions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ const getAppo = () => {
         appointmentName: statet.value.appointmentName 
       })
     }
-    fetch(`http://localhost:4000/api/appointment/${_id}`,
+    fetch(`${baseURL}appointment/${_id}`,
       requestOptions)
       .then(getAllAppo)
       .then(() => {
@@ -164,7 +164,7 @@ const getAppo = () => {
   const appo = ref({})
   const getSpecificAppo = async () => {
     try {
-      fetch("http://localhost:4000/api/appointment/")
+      fetch(`${baseURL}appointment/`)
         .then(res =>  res.json() ) 
         .then(data => {
             appo.value = data.filter(t => t._id === appoId.value)
