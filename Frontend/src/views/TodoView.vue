@@ -5,10 +5,7 @@
     <div class="logo">
 
       <h1><i class="fab fa-trello logo-icon" aria-hidden="true"></i>To Do Board 💫</h1>
-      <div class="menubar">
-        <a href="./profile">
-          <img class="image" src="../assets/user.png" alt="Placeholder Image"> </a>
-          <p>{{ userState.name }}</p>  
+      <div class="menubar"> 
 
         <div class="user-info">
         
