@@ -44,7 +44,7 @@ const getAppo = () => {
     const userId = localStorage.getItem('userId');
   
     // Fetch the highest position value for the user's appointments
-    fetch(`${baseURL}/appointment/highestPosition?userId=${userId}`)
+    fetch(`${baseURL}appointment/highestPosition?userId=${userId}`)
       .then(response => response.json())
       .then(data => {
         const highestPosition = data.highestPosition || 0; // If there are no items, start position from 0

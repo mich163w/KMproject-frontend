@@ -192,8 +192,8 @@ import todoCrud from '../modules/todoCrud';
 import userCrud from '../modules/userCrud';
 
 const { state, getAllShop, deleteShop, editShop, newShop, updateShopPositions } = shopCrud();
-const { statet, getAllAppo, newAppo, deleteAppo, editAppo, updateAppoPositions } = appoCrud();
-const { stateTodo, getAllTodo, newTodo, deleteTodo, editTodo, updateTodoPositions } = todoCrud();
+const { statet, getAllAppo, deleteAppo, editAppo, newAppo, updateAppoPositions } = appoCrud();
+const { stateTodo, getAllTodo, deleteTodo, editTodo, newTodo, updateTodoPositions } = todoCrud();
 const {  userState, getUserInfo } = userCrud();
 
 const router = useRouter();
@@ -213,7 +213,6 @@ const appoCloseModal = () => {
     isOpenAppo.value = false;
 
 };
-
 
 const shopEditModal = (item) => {
     state.value = item;
