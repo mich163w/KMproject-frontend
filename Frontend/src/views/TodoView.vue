@@ -8,9 +8,10 @@
       <div class="menubar">
         <a href="./profile">
           <img class="image" src="../assets/user.png" alt="Placeholder Image"> </a>
+          <p>{{ userState.name }}</p>  
 
         <div class="user-info">
-
+        
           <h2>Lists</h2>
           <h3 style="font-size: 14px;">To Do Board 💫</h3>
 
@@ -42,7 +43,7 @@
 
       </div>
 
-      <button class="user-logout-btn btn" aria-label="Logout">
+      <button @click="logOut" class="user-logout-btn btn" aria-label="Logout">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon">
           <path fill="#ffffff"
             d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
@@ -186,15 +187,25 @@
 <script setup>
 import { ref } from 'vue';
 import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 import shopCrud from '../modules/shopCrud';
 import appoCrud from '../modules/appoCrud';
 import todoCrud from '../modules/todoCrud';
+import userCrud from '../modules/userCrud';
 
 const { state, getAllShop, deleteShop, editShop, newShop, updateShopPositions } = shopCrud();
 const { statet, getAllAppo, newAppo, deleteAppo, editAppo, updateAppoPositions } = appoCrud();
 const { stateTodo, getAllTodo, newTodo, deleteTodo, editTodo, updateTodoPositions } = todoCrud();
+const {  userState, getUserInfo } = userCrud();
 
+const router = useRouter();
+
+const logOut = () => {
+    localStorage.removeItem('auth-token'); // Fjern autentifikationstokenen fra localStorage
+    localStorage.removeItem('userId'); // Fjern også brugerens id, hvis det er nødvendigt
+    router.push('/'); // Omdiriger brugeren til login-siden
+};
 
 const appoEditModal = (item) => {
     statet.value = item;
@@ -229,6 +240,7 @@ const toDoCloseModal = () => {
     getAllShop();
     getAllAppo();
     getAllTodo();
+    getUserInfo();
       })
 
 const isOpenAppo = ref(false)
@@ -460,7 +472,6 @@ h2 {
 .image {
   width: 30%;
   height: auto;
-  margin-bottom: 20px;
   border-radius: 100px;
 }
 
