@@ -4,7 +4,7 @@ info:
   description: MongoDB ExpressJS NodeJS REST API
   version: 1.0.0
 servers:
-  - url: https://kmproject-frontend-1.onrender.com/api
+  - url: https://kmproject-frontend-1.onrender.com/api/
     description: Localhost development server 
   - url: https://smsj-men-restapi.herokuapp.com/api/
     description: Heroku remote server
