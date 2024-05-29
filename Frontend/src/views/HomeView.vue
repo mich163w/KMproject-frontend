@@ -46,8 +46,7 @@ const login = async () => {
       email: email.value,
       password: password.value
     }
-    console.log(baseURL)
-    await fetch(`${baseURL}user/login`, {
+    await fetch(`http://localhost:4000/api/user/login`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json'

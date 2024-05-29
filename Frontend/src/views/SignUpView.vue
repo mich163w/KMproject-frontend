@@ -35,7 +35,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-const baseURL = import.meta.env.VITE_BASE_URL;
+
 const route = useRoute();
 const router = useRouter();
 
@@ -50,7 +50,7 @@ const signUp = async () => {
       email: email.value,
       password: password.value
     }
-    await fetch(`${baseURL}user/register`, {
+    await fetch(`http://localhost:4000/api/user/register`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json'

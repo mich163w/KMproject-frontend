@@ -1,35 +1,28 @@
 const router = require('express').Router();
-const { application } = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const { registerValidation, loginValidation, changePasswordValidation } = require('../validation');
 const jwt = require('jsonwebtoken');
-const Joi = require("joi");
 
-// registration
-// post request because we want to send data to the api and eventually also to the database to save registering a user
+// Registration
 router.post("/register", async (req, res) => {
-    // validate user input (name, email, password) 
+    // Validate user input (name, email, password) 
     const { error } = registerValidation(req.body);
-
     if (error) {
         return res.status(400).json({ error: error.details[0].message });
-
     }
 
-
-    // check if email is already registered
+    // Check if email is already registered
     const emailExist = await User.findOne({ email: req.body.email });
-
     if (emailExist) {
-        return res.status(400).json({ error: "Email already exists" })
+        return res.status(400).json({ error: "Email already exists" });
     }
 
-    // hash the password
+    // Hash the password
     const salt = await bcrypt.genSalt(10);
     const password = await bcrypt.hash(req.body.password, salt);
 
-    // create a user object and save in the DB
+    // Create a user object and save in the DB
     const userObject = new User({
         name: req.body.name,
         email: req.body.email,
@@ -40,102 +33,112 @@ router.post("/register", async (req, res) => {
         const savedUser = await userObject.save();
         res.json({ error: null, data: savedUser.id });
     } catch (error) {
-        res.status(400).json({ error })
+        res.status(400).json({ error });
     }
+});
 
-})
-
-
-// /login
+// Login
 router.post("/login", async (req, res) => {
-
-    // validate user login info
+    // Validate user login info
     const { error } = loginValidation(req.body);
-
     if (error) {
         console.log("wrong user info");
         return res.status(400).json({ error: error.details[0].message });
     }
 
-    // if login info is valid, find the user
+    // Find the user
     const user = await User.findOne({ email: req.body.email });
-
-    // throw error if the email is wrong (user does not exist in DB)
     if (!user) {
         console.log("not found in db");
-        return res.status(400).json({ error: "Email is wrong" })
+        return res.status(400).json({ error: "Email is wrong" });
     }
 
-
-    // user exist - check for password correctness
-    const validPassword = await bcrypt.compare(req.body.password, user.password)
-
-
-    // throw error if password is wrong
+    // Check for password correctness
+    const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) {
         return res.status(400).json({ error: "Password is wrong" });
     }
 
-
-    // create authentication token with username and id
+    // Create access token
     const token = jwt.sign(
-        // payload
-        {
-            name: user.name,
-            id: user.id
-        },
-        // TOKEN_SECRET
+        { name: user.name, id: user.id },
         process.env.TOKEN_SECRET,
-        //EXPIRATION TIME
-        { expiresIn: process.env.JWT_EXPIRES_IN },
+        { expiresIn: process.env.JWT_EXPIRES_IN }
+    );
 
+   // Create refresh token
+            const refreshToken = jwt.sign(
+        // Opretter et nyt JWT-token, der indeholder brugerens navn, e-mail og typen 'refresh'
+            { name: user.name, email: user.email, type: 'refresh' },
+        // Bruger variabelen TOKEN_SECRET til at signere tokenet
+            process.env.TOKEN_SECRET,
+        // Angiver tiden for refresh token
+            { expiresIn: '24h' }
+            );
 
-    )
+    const loggedInUser = {
+        id: user._id,
+        name: user.name,
+        email: user.email
+    };
+    const userId = user.id;
 
-    const userId = user.id
-
-    // attach auth token to header
+    // Attach auth token to header and respond
     res.header("auth-token", token).json({
         error: null,
-        data: { token, userId }
+        data: { token, refreshToken, userId },
+        loggedInUser
     });
-})
+});
 
+// Refresh token route
+router.post("/refresh", async (req, res) => {
+    const { email, refreshToken } = req.body;
+    // Validerer refresh token ved at kalde verifyRefresh-funktionen
+    const isValid = verifyRefresh(email, refreshToken);
+    if (!isValid) {
+        // Hvis refresh token ikke er gyldigt, sendes en fejlmeddelelse
+        return res.status(401).json({ success: false, error: "Invalid token, try login again" });
+    }
+
+    // Find brugeren baseret på den angivne e-mail
+    const user = await User.findOne({ email: req.body.email });
+
+    // Opretter en ny access token med en levetid på 2 timer
+    const accessToken = jwt.sign(
+        // Tokenet indeholder brugerens navn, e-mail og typen 'access'
+        { name: user.name, email: user.email, type: 'access' },
+        // Signerer tokenet med TOKEN_SECRET
+        process.env.TOKEN_SECRET,
+        // Angiver udløbstiden for access token til 2 timer
+        { expiresIn: '2h' }
+    );
+    // Sender den nye access token til klienten som svar
+    return res.status(200).json({ success: true, accessToken });
+});
+
+
+// Profile
 router.get("/profile", async (req, res) => {
     try {
-        // Få token fra anmodningens header
         const token = req.header("auth-token");
-
-        // Hvis token ikke er tilgængelig, send fejl
         if (!token) {
             return res.status(401).json({ error: "Access Denied" });
         }
-
-        // Valider token
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-
-        // Find brugeren baseret på tokenens id
         const user = await User.findById(verified.id);
-
-        // Hvis brugeren ikke eksisterer, send fejl
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
-
-        // Returner brugerens navn og e-mail
         res.json({ id: user._id, name: user.name, email: user.email });
     } catch (error) {
-        // Hvis der opstår en fejl, send fejlbesked
         res.status(400).json({ error: error.message });
     }
 });
 
-
+// Change user details
 router.put('/changes/:userId', async (req, res) => {
-
-
     try {
-        // Hent brugerens eksisterende oplysninger fra databasen
         const user = await User.findById(req.params.userId);
         if (!user) return res.status(404).json({ error: 'User not found' });
 
@@ -145,14 +148,12 @@ router.put('/changes/:userId', async (req, res) => {
             if (!isPasswordValid) return res.status(400).json({ error: 'Current password is incorrect' });  
         }
 
-        // Opdater brugerens loginoplysninger baseret på de modtagne data
-        user.email = req.body.email || user.email; // Opdater kun, hvis der er sendt en ny e-mail
+        user.email = req.body.email || user.email; 
         user.name = req.body.name || user.name;
         if (req.body.newPassword) {
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(req.body.newPassword, salt);
         }
-        // Gem ændringerne i databasen
         const updatedUser = await user.save();
         res.json(updatedUser);
     } catch (error) {
@@ -160,35 +161,27 @@ router.put('/changes/:userId', async (req, res) => {
     }
 });
 
-
+// Change password
 router.put("/password/:userId", async (req, res) => {
-    // Validér inputdata fra brugeren
     const { error } = changePasswordValidation(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
     try {
-        // Hent brugerens eksisterende oplysninger fra databasen
         const user = await User.findById(req.params.userId);
         if (!user) return res.status(404).json({ error: 'User not found' });
 
-        // Kontroller, om det gamle kodeord matcher det, der blev sendt
         const isPasswordValid = await bcrypt.compare(req.body.currentPassword, user.password);
         if (!isPasswordValid) return res.status(400).json({ error: 'Current password is incorrect' });
 
-        // Generer et salt og hash for det nye kodeord
         const salt = await bcrypt.genSalt(10);
         const hashedNewPassword = await bcrypt.hash(req.body.newPassword, salt);
 
-        // Opdater brugerens adgangskode i databasen
         user.password = hashedNewPassword;
-
-        // Gem ændringerne i databasen
         const updatedUser = await user.save();
         res.json(updatedUser);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
-})
-
+});
 
 module.exports = router;

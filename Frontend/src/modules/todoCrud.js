@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-const baseURL = import.meta.env.VITE_BASE_URL;
+
 const getTodo = () => {
 
   const route = useRoute();
@@ -17,7 +17,7 @@ const getTodo = () => {
   const getAllTodo = async () => {
     try {
       const userId = localStorage.getItem('userId'); 
-      await fetch(`${baseURL}toDo/${userId}`)
+      await fetch(`http://localhost:4000/api/toDo/${userId}`)
       .then(res => res.json())
       .then(data => {
 
@@ -42,7 +42,7 @@ const getTodo = () => {
     const userId = localStorage.getItem('userId');
   
     // Fetch the highest position value for the user's todos
-    fetch(`${baseURL}toDo/highestPosition?userId=${userId}`)
+    fetch(`http://localhost:4000/api/toDo/highestPosition?userId=${userId}`)
       .then(response => response.json())
       .then(data => {
         const highestPosition = data.highestPosition || 0; 
@@ -62,7 +62,7 @@ const getTodo = () => {
         };
   
         // Send POST request to create new todo with the calculated position
-        return fetch(`${baseURL}toDo`, requestOptions);
+        return fetch(`http://localhost:4000/api/toDo`, requestOptions);
       })
       .then(response => response.json())
       .then(data => {
@@ -84,7 +84,7 @@ const getTodo = () => {
 const deleteTodo = (_id) => {
   const authToken = localStorage.getItem('auth-token');
 
-  fetch(`${baseURL}toDo/${_id}`, {
+  fetch(`http://localhost:4000/api/toDo/${_id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -109,7 +109,7 @@ const deleteTodo = (_id) => {
 
 const updateTodoPositions = async (itemArray) => {
   try {
-      const response = await fetch(`${baseURL}todo/updatePositions`, {
+      const response = await fetch(`http://localhost:4000/api/todo/updatePositions`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -137,10 +137,12 @@ const updateTodoPositions = async (itemArray) => {
         "auth-token": stateTodo.value.token
       },
       body: JSON.stringify({
-        toDoName: stateTodo.value.toDoName
+        toDoName: stateTodo.value.toDoName,
+        backgroundColor: stateTodo.value.backgroundColor 
+
       }) 
     }
-    fetch(`${baseURL}toDo/${_id}`,
+    fetch(`http://localhost:4000/api/toDo/${_id}`,
     requestOptions)
     .then(getAllTodo)
     .then(() => {
@@ -156,7 +158,7 @@ const updateTodoPositions = async (itemArray) => {
   const todo = ref({})
   const getSpecificTodo = async () => {
     try {
-      fetch(`${baseURL}toDo/`)
+      fetch(`http://localhost:4000/api/toDo/`)
         .then(res =>  res.json() ) 
         .then(data => {
             todo.value = data.filter(t => t._id === todoId.value)

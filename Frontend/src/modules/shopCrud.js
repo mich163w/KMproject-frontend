@@ -1,47 +1,41 @@
-import { ref, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-const baseURL = import.meta.env.VITE_BASE_URL;
+import { ref, computed } from 'vue'; // Importerer 'ref' og 'computed' fra Vue
+import { useRoute, useRouter } from 'vue-router'; // Importerer 'useRoute' og 'useRouter' fra Vue Router
+
 const getShop = () => {
 
-  const route = useRoute();
-  const router = useRouter();
-  const shopId = computed(() => route.params.id)
+  const route = useRoute(); // Henter den aktuelle rute fra Vue Router
+  const router = useRouter(); // Henter routeren fra Vue Router
+  const shopId = computed(() => route.params.id); // Beregner værdien af 'shopId' baseret på parameteren 'id' i ruten
 
   const state = ref({
-    shoppingItemName: '',
-    shops: {}
+    shoppingItemName: '', // Initialiserer shoppingvarens navn
+    shops: {} // Initialiserer en tom objekt, der skal indeholde butikker
   })
-
-
 
   const getAllShop = async () => {
     try {
-      const userId = localStorage.getItem('userId'); 
-       await fetch(`${baseURL}shoppingItem/${userId}`)
+      const userId = localStorage.getItem('userId'); // Henter brugerens ID fra local storage
+       await fetch(`http://localhost:4000/api/shoppingItem/${userId}`) // Sender en GET-anmodning for at hente alle shoppingvarer for den pågældende bruger
       .then(res => res.json())
       .then(data => {
 
         console.log(data)
 
-        data = data.sort((a, b) =>  a.position - b.position)
+        data = data.sort((a, b) =>  a.position - b.position) // Sorterer shoppingvarerne baseret på deres position
 
-        state.value.shops = data
+        state.value.shops = data; // Opdaterer 'shops' med de hentede data
       });
       console.log("mongo shop", state.value.shops)
     }
     catch(error) {
-      console.log(error) // do different error to showcase - line 15 wrong name + line13 with incorrect path
+      console.log(error) // Håndterer fejl under hentning af shoppingvarer
     }
   };
 
-
-
-
   const newShop = () => {
-    const userId = localStorage.getItem('userId');
+    const userId = localStorage.getItem('userId'); // Henter brugerens ID fra local storage
 
-    // Fetch the highest position value for the user's shopping items
-    fetch(`${baseURL}shoppingItem/highestPosition?userId=${userId}`)
+    fetch(`http://localhost:4000/api/shoppingItem/highestPosition?userId=${userId}`)
         .then(response => response.json())
         .then(data => {
             const highestPosition = data.highestPosition || 0;
@@ -51,7 +45,7 @@ const getShop = () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "auth-token": localStorage.getItem('auth-token')
+                    "auth-token": localStorage.getItem('auth-token') // Henter JWT-token fra local storage
                 },
                 body: JSON.stringify({
                     shoppingItemName: state.value.shoppingItemName,
@@ -60,27 +54,21 @@ const getShop = () => {
                 })
             };
 
-            // Send POST request to create new shopping item with the calculated position
-            return fetch(`${baseURL}shoppingItem`, requestOptions);
+            return fetch(`http://localhost:4000/api/shoppingItem`, requestOptions); // Sender en POST-anmodning for at oprette en ny shoppingvare
         })
         .then(response => response.json())
         .then(data => {
             console.log('New shoppingItem added:', data);
-            getAllShop(); // Assuming this function retrieves all shopping items after adding a new one
+            getAllShop(); // Opdaterer listen over shoppingvarer efter tilføjelse af en ny
         })
         .catch(error => {
             console.error('Error adding new shoppingItem:', error);
         });
 };
 
-  
-
-
-
-
 const updateShopPositions = async (itemArray) => {
   try {
-      const response = await fetch(`${baseURL}shoppingItem/updatePositions`, {
+      const response = await fetch(`http://localhost:4000/api/shoppingItem/updatePositions`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -99,17 +87,14 @@ const updateShopPositions = async (itemArray) => {
   }
 };
 
-
-
-
 const deleteShop = (_id) => {
-  const authToken = localStorage.getItem('auth-token'); 
+  const authToken = localStorage.getItem('auth-token'); // Henter JWT-token fra local storage
 
-  fetch(`${baseURL}shoppingItem/${_id}`, {
+  fetch(`http://localhost:4000/api/shoppingItem/${_id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      "auth-token": authToken 
+      "auth-token": authToken // Sender JWT-token som en del af anmodningens header
     }
   })
     .then(response => {
@@ -120,70 +105,58 @@ const deleteShop = (_id) => {
     })
     .then(data => {
       console.log('shopping item item deleted:', data);
-      getAllShop();
+      getAllShop(); // Opdaterer listen over shoppingvarer efter sletning
     })
     .catch(error => {
       console.error('Error deleting shopping item item:', error);
     });
 };
 
-
-
-
-
-
-  const editShop = (_id) => { 
-    const requestOptions = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": state.value.token
-      },
-      body: JSON.stringify({
-        shoppingItemName: state.value.shoppingItemName
-      }) 
-    }
-    fetch(`${baseURL}shoppingItem/${_id}`,
-    requestOptions)
-    .then(getAllShop)
-    .then(() => {
-  
+const editShop = (_id) => { 
+  const requestOptions = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "auth-token": state.value.token // Bruger token fra state
+    },
+    body: JSON.stringify({
+      shoppingItemName: state.value.shoppingItemName,
+      backgroundColor: state.value.backgroundColor 
     })
+  };
+    fetch(`http://localhost:4000/api/shoppingItem/${_id}`, requestOptions)
+    .then(getAllShop)
     .catch(error => {
       console.error('Error editing shopping item:', error);
     });
+};
+
+
+const shop = ref({}) // Initialiserer en ref til at gemme en enkelt butik
+const getSpecificShop = async () => {
+  try {
+    fetch(`http://localhost:4000/api/shoppingItem/`)
+      .then(res =>  res.json() ) 
+      .then(data => {
+          shop.value = data.filter(t => t._id === shopId.value) // Filtrer butikker baseret på ID
+      })
+  }
+  catch(error) {
+    console.log(error)
+  }
 }
 
-  
-
-
-  const shop = ref({})
-  const getSpecificShop = async () => {
-    try {
-      fetch(`${baseURL}shoppingItem/`)
-        .then(res =>  res.json() ) 
-        .then(data => {
-            shop.value = data.filter(t => t._id === shopId.value)
-        })
-    }
-    catch(error) {
-      console.log(error)
-    }
-  }
-
-
-
-  return {
-    shopId,
-    getShop,
-    state,
-    getSpecificShop,
-    getAllShop,
-    newShop,
-    deleteShop,
-    editShop,
-    updateShopPositions,
-  }
+return {
+  shopId,
+  getShop,
+  state,
+  getSpecificShop,
+  getAllShop,
+  newShop,
+  deleteShop,
+  editShop,
+  updateShopPositions,
+}
 
 }
 export default getShop

@@ -5,8 +5,8 @@ let shoppingItemSchema = new Schema(
 {
     shoppingItemName: {type: String},
     user: { type: Schema.Types.ObjectId, ref: "user" },
-    position: { type: Number}
-
+    position: { type: Number},
+    backgroundColor: { type: String, default: "#FFFFFF" }
 }
 );
 

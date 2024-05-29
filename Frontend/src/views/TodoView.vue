@@ -64,9 +64,10 @@
     <button @click="newShop" class="add-card-btn btn">Add</button>
     <div @dragover.prevent @drop="drop($event, 'shops', destinationIndex)">
       <ul>
-  <li v-for="(item, index) in state.shops" :key="index" draggable="true"  @dragover="destinationIndex = index" @dragstart="drag($event, 'shops', index)">
+  <li v-for="(item, index) in state.shops" :key="index" :style="{ backgroundColor: item.backgroundColor }"draggable="true"  @dragover="destinationIndex = index" @dragstart="drag($event, 'shops', index)">
     <br>
-    {{ item.shoppingItemName }}
+    <span class="item-text">{{ item.shoppingItemName }}</span>
+
 
     <div class="item-buttons">
       <button @click="shopEditModal(item)" class="edit-btn">Edit</button>
@@ -78,15 +79,16 @@
 
         <!-- modal -->
         <div class="modal" v-if="isOpenShop">
-          <div>
-            <h4 class="modalHeader">Edit</h4>
-              <form class="form">
-                <input type="text" v-model="state.shoppingItemName" placeholder="Add" class="appointment">
-              </form>                      
-                <button @click="editShop(state._id)" class="edit-btn">Edit</button>
-                <button @click="isOpenShop = false">x</button> 
-          </div>
-        </div>
+    <div>
+      <h4 class="modalHeader">Edit Shopping Item</h4>
+      <form class="form">
+        <input type="text" v-model="state.shoppingItemName" placeholder="Add" class="shopping-item">
+        <input type="color" v-model="state.backgroundColor" placeholder="Background Color" class="background-color-picker">
+      </form>
+      <button @click="editShop(state._id)" class="edit-btn">Edit</button>
+      <button @click="shopCloseModal">Close</button>
+    </div>
+  </div>
       </div>
 
  
@@ -106,7 +108,7 @@
     <ul>
   <li v-for="(item, index) in statet.appos" :key="index" draggable="true" @dragover="destinationIndex = index" @dragstart="drag($event, 'appos', index)">
     <br>
-    {{ item.appointmentName }}
+     <span class="item-text">{{ item.appointmentName }}</span>
 
     <div class="item-buttons">
       <button @click="appoEditModal(item)" class="edit-btn">Edit</button>
@@ -134,38 +136,43 @@
 
 
 
-  <div class="list">
+      <div class="list">
     <h3 class="list-title">To do list</h3>
     <form class="form">
-        <input type="text" v-model="stateTodo.toDoName" placeholder="Add" class="todo">
+      <input type="text" v-model="stateTodo.toDoName" placeholder="Add" class="todo">
     </form>
     <button @click="newTodo" class="add-card-btn btn">Add</button>
 
     <div @dragover.prevent @drop="drop($event, 'todos', destinationIndex)">
-    <ul>
-  <li v-for="(item, index) in stateTodo.todos" :key="index" draggable="true"  @dragover="destinationIndex = index" @dragstart="drag($event, 'todos', index)">
-    {{ item.toDoName }}
+      <ul>
+        <li v-for="(item, index) in stateTodo.todos" :key="index" draggable="true" @dragover="destinationIndex = index" @dragstart="drag($event, 'todos', index)" :style="{ backgroundColor: item.backgroundColor }">
+          <span class="item-text">{{ item.toDoName }}</span>
 
-    <div class="item-buttons">
-      <button @click="toDoEditModal(item)" class="edit-btn">Edit</button>
-      <button @click="deleteTodo(item._id)" class="delete-btn">Delete</button>
-    </div>
-  </li>
-</ul>
-</div>
-      <!-- modal -->
-      <div class="modal" v-if="isOpenTodo">
-        <div>
-            <h4 class="modalHeader">Edit</h4>
-            <form class="form">
-                <input type="text" v-model="stateTodo.toDoName" placeholder="Add" class="appointment">
-            </form> 
-            <button @click="editTodo(stateTodo._id)" class="edit-btn">Edit</button>
-            <button @click="toDoCloseModal">Close</button>
-            
+          <div class="item-buttons">
+            <button @click="toDoEditModal(item)" class="edit-btn">Edit</button>
+            <button @click="deleteTodo(item._id)" class="delete-btn">Delete</button>
           </div>
-        </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- modal -->
+    <div class="modal" v-if="isOpenTodo">
+      <div>
+        <h4 class="modalHeader">Edit</h4>
+        <form class="form">
+          <input type="text" v-model="stateTodo.toDoName" placeholder="Add" class="appointment">
+          <div class="color-options">
+            <label v-for="color in predefinedColors" :key="color" :style="{ backgroundColor: color }" class="color-button" @click="setColor(color)">
+              <input type="radio" :value="color" v-model="stateTodo.backgroundColor" />
+            </label>
+          </div>
+        </form>
+        <button @click="editTodo(stateTodo._id)" class="edit-btn">Edit</button>
+        <button @click="toDoCloseModal">Close</button>
       </div>
+    </div>
+  </div>
 
 
 
@@ -182,129 +189,157 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
-import shopCrud from '../modules/shopCrud';
-import appoCrud from '../modules/appoCrud';
-import todoCrud from '../modules/todoCrud';
-import userCrud from '../modules/userCrud';
+import shopCrud from '../modules/shopCrud'; // Importer funktioner til butiksoperationer
+import appoCrud from '../modules/appoCrud'; // Importer funktioner til aftaleoperationer
+import todoCrud from '../modules/todoCrud'; // Importer funktioner til opgaveoperationer
+import userCrud from '../modules/userCrud'; // Importer funktioner til brugeroperationer
 
-const { state, getAllShop, deleteShop, editShop, newShop, updateShopPositions } = shopCrud();
-const { statet, getAllAppo, deleteAppo, editAppo, newAppo, updateAppoPositions } = appoCrud();
-const { stateTodo, getAllTodo, deleteTodo, editTodo, newTodo, updateTodoPositions } = todoCrud();
-const {  userState, getUserInfo } = userCrud();
+const { state, getAllShop, deleteShop, editShop: editShopItem, newShop, updateShopPositions } = shopCrud(); // Initialiser butiksdata og operationer
+const { statet, getAllAppo, deleteAppo, editAppo, newAppo, updateAppoPositions } = appoCrud(); // Initialiser aftaledata og operationer
+const { stateTodo, getAllTodo, deleteTodo, editTodo, newTodo, updateTodoPositions } = todoCrud(); // Initialiser opgavedata og operationer
+const { userState, getUserInfo } = userCrud(); // Initialiser brugerdata og operationer
 
-const router = useRouter();
+const router = useRouter(); // Router for navigationsfunktionalitet
 
-const logOut = () => {
-    localStorage.removeItem('auth-token'); 
-    localStorage.removeItem('userId'); 
-    router.push('/');
+const logOut = () => { // Funktion til at logge brugeren ud
+  localStorage.removeItem('auth-token'); // Fjern autentificeringstoken fra lokal lagring
+  localStorage.removeItem('userId'); // Fjern brugerens ID fra lokal lagring
+  router.push('/'); // Omdiriger brugeren til startsiden
 };
 
-const appoEditModal = (item) => {
-    statet.value = item;
-    isOpenAppo.value = !isOpenAppo.value;
+const appoEditModal = (item) => { // Funktion til at åbne/lukke redigeringsmodal for aftaler
+  statet.value = item; // Indstil aftaledata til det valgte element
+  isOpenAppo.value = !isOpenAppo.value; // Åbn eller luk modal
 };
 
-const appoCloseModal = () => {
-    isOpenAppo.value = false;
-
+const appoCloseModal = () => { // Funktion til at lukke redigeringsmodal for aftaler
+  isOpenAppo.value = false; // Luk modal
 };
 
-const shopEditModal = (item) => {
-    state.value = item;
-    isOpenShop.value = !isOpenShop.value;
+const shopEditModal = (item) => { // Funktion til at åbne/lukke redigeringsmodal for butikker
+  state.value = item; // Indstil butikdata til det valgte element
+  isOpenShop.value = !isOpenShop.value; // Åbn eller luk modal
 };
 
-const shopCloseModal = () => {
-        isOpenShop.value = false;
-    };
-
-const toDoEditModal = (item) => {
-    stateTodo.value = item;
-    isOpenTodo.value = !isOpenTodo.value;
+const shopCloseModal = () => { // Funktion til at lukke redigeringsmodal for butikker
+  isOpenShop.value = false; // Luk modal
 };
 
-const toDoCloseModal = () => {
-    isOpenTodo.value = false;
+
+const predefinedColors = ref(['#FFFFFF', '#8DDCA4', '#86BBD8', '#FAEE85', '#FD9797']); // Foruddefinerede farver til opgaver
+
+const toDoEditModal = (item) => { // Funktion til at åbne/lukke redigeringsmodal for opgaver
+  stateTodo.value = { ...item }; // Indstil opgavedata til det valgte element
+  isOpenTodo.value = true; // Åbn modal
 };
 
-  onMounted(() => {
-    getAllShop();
-    getAllAppo();
-    getAllTodo();
-    getUserInfo();
-      })
-
-const isOpenAppo = ref(false)
-const isOpenShop = ref(false)
-const isOpenTodo = ref(false)
-const destinationIndex = ref(-1)
-
-const drag = (event, listName, index) => {
-
-  console.log(listName, index)
-
-  event.dataTransfer.setData('text/plain', JSON.stringify({ listName, index }));
+const toDoCloseModal = () => { // Funktion til at lukke redigeringsmodal for opgaver
+  isOpenTodo.value = false; // Luk modal
 };
 
-const drop = (event, destinationListName, destinationIndex) => {
-  event.preventDefault();
+const setColor = (color) => { // Funktion til at vælge baggrundsfarve for opgaver
+  stateTodo.value.backgroundColor = color; // Indstil baggrundsfarve
+};
 
 
-  const { listName, index } = JSON.parse(event.dataTransfer.getData('text/plain'));
 
-  console.log(destinationListName, destinationIndex)
+const editShop = async (_id) => { // Funktion til at redigere en butik
+  const requestOptions = {
+    method: 'PUT', // HTTP-forespørgselstype
+    headers: {
+      'Content-Type': 'application/json', // Indholdstype for anmodningen
+      'auth-token': localStorage.getItem('auth-token') // Autentificeringstoken fra lokal lagring
+    },
+    body: JSON.stringify({
+      shoppingItemName: state.value.shoppingItemName, // Opdater butikkens navn
+      backgroundColor: state.value.backgroundColor // Opdater baggrundsfarven
+    })
+  };
 
-  let item  
-   // Add the item to the destination list
-  switch (destinationListName) {
-    case 'shops':
-   item = state.value.shops[index];
-  
-  // Remove the item from the source list
-  state.value.shops.splice(index, 1);
-  
-  // Add the item to the destination list
-  state.value.shops.splice(destinationIndex, 0, item);
+  try {
+    const response = await fetch(`http://localhost:4000/api/shoppingItem/${_id}`, requestOptions); // Udfør HTTP-anmodning til API-endepunkt
+    if (!response.ok) {
+      throw new Error('Failed to update shopping item'); // Kast fejl ved fejlagtig svar fra serveren
+    }
+    await getAllShop(); // Hent opdaterede butiksdata
+  } catch (error) {
+    console.error('Error editing shopping item:', error); // Håndter fejl under redigering af butik
+  }
+};
 
-  state.value.shops.forEach((item, index) => {
-    item.position = index
-  });
-  updateShopPositions(state.value.shops);
-    break;
+onMounted(() => { // Kør funktioner ved komponentens montering
+  getAllShop(); // Hent butiksdata
+  getAllAppo(); // Hent aftaledata
+  getAllTodo(); // Hent opgavedata
+  getUserInfo(); // Hent brugeroplysninger
+});
+
+const isOpenAppo = ref(false); // Tilstand for åbning af redigeringsmodal for aftaler
+const isOpenShop = ref(false); // Tilstand for åbning af redigeringsmodal for butikker
+const isOpenTodo = ref(false); // Tilstand for åbning af redigeringsmodal for opgaver
+const destinationIndex = ref(-1); // Destinationens indeks under træk-og-slip-operation
+
+const drag = (event, listName, index) => { // Funktion til at håndtere trækning af elementer
+  console.log(listName, index); // Log navn på listen og elementets indeks
+  event.dataTransfer.setData('text/plain', JSON.stringify({ listName, index })); // Indstil data til træk-og-slip-operation
+};
+
+const drop = (event, destinationListName, destinationIndex) => { // Funktion til at håndtere slip af elementer
+  event.preventDefault(); // Forhindrer standardhåndtering af hændelsen
+  const { listName, index } = JSON.parse(event.dataTransfer.getData('text/plain')); // Udvind data fra træk-og-slip-operation
+
+  console.log(destinationListName, destinationIndex); // Log destinationens liste og indeks
+
+  let item;
+switch (destinationListName) {
+  case 'shops':
+    // Henter elementet fra den oprindelige position
+    item = state.value.shops[index];
     
-    case 'appos':
-  item = statet.value.appos[index];
-  statet.value.appos.splice(index, 1);
-  statet.value.appos.splice(destinationIndex, 0, item);
+    // Fjerner elementet fra den oprindelige position
+    state.value.shops.splice(index, 1);
+    
+    // Indsætter elementet på den nye position
+    state.value.shops.splice(destinationIndex, 0, item);
+    
+    // Opdaterer positionen for hvert element i listen
+    state.value.shops.forEach((item, index) => {
+      item.position = index;
+    });
+    
+    // Opdaterer positionerne i databasen eller state management
+    updateShopPositions(state.value.shops);
+    break;
 
-  statet.value.appos.forEach((item, index) => {
-    item.position = index
-  });
-  updateAppoPositions(statet.value.appos);
+    case 'appos':
+      item = statet.value.appos[index];
+      statet.value.appos.splice(index, 1);
+      statet.value.appos.splice(destinationIndex, 0, item);
+      statet.value.appos.forEach((item, index) => {
+        item.position = index;
+      });
+      updateAppoPositions(statet.value.appos);
       break;
 
-      case 'todos':
-  item = stateTodo.value.todos[index];
-  stateTodo.value.todos.splice(index, 1);
-  stateTodo.value.todos.splice(destinationIndex, 0, item);
-
-  stateTodo.value.todos.forEach((item, index) => {
-    item.position = index
-  });
-  updateTodoPositions(stateTodo.value.todos);
-  break;
+    case 'todos':
+      item = stateTodo.value.todos[index];
+      stateTodo.value.todos.splice(index, 1);
+      stateTodo.value.todos.splice(destinationIndex, 0, item);
+      stateTodo.value.todos.forEach((item, index) => {
+        item.position = index;
+      });
+      updateTodoPositions(stateTodo.value.todos);
+      break;
 
     default:
       break;
   }
 };
-
 </script>
+
 
 
 
@@ -749,4 +784,8 @@ li {
   color:black;
 }
 
+.item-text {
+  font-size: 20px;
+  font-weight: 400;
+}
 </style>

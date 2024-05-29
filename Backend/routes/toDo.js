@@ -66,22 +66,20 @@ router.get("/:id", (req, res) => {
 
 // Update specific product
 router.put("/:id", (req, res) => {
-
     const id = req.params.id;
-
-    toDo.findByIdAndUpdate(id, req.body)
-
-        .then(data => {
-            if (!data) {
-                res.status(404).send({ message: "Cannot update toDo by id=" + id + ". Maybe toDo was not found" })
-            }
-            else {
-                res.send({ message: "Product was succesfully updated." })
-            }
-
-        })
-        .catch(err => { res.status(500).send({ message: "Error updating toDo with id=" + id }); })
-});
+  
+    toDo.findByIdAndUpdate(id, req.body, { new: true })
+      .then(data => {
+        if (!data) {
+          res.status(404).send({ message: "Cannot update to do by id=" + id + ". Maybe to do was not found" });
+        } else {
+          res.send({ message: "To do was successfully updated.", data });
+        }
+      })
+      .catch(err => {
+        res.status(500).send({ message: "Error updating to do with id=" + id });
+      });
+  });
 
 
 

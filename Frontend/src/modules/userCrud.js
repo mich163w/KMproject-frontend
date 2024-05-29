@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-const baseURL = import.meta.env.VITE_BASE_URL;
+
 const getUser = () => {
 
   const route = useRoute();
@@ -27,7 +27,7 @@ const getUser = () => {
         newPassword
       }) 
     }
-    fetch(`${baseURL}user/changes/${userId}`, 
+    fetch(`http://localhost:4000/api/user/changes/${userId}`, 
     requestOptions)
       .then(res => res.json())
       .then(res => {console.log(res)}) 
@@ -46,7 +46,7 @@ const getUser = () => {
         newPassword: newPassword
       }) 
     }
-    fetch(`${baseURL}user/password/${userId}` , 
+    fetch(`http://localhost:4000/api/user/password/${userId}` , 
     requestOptions)
       .then(res => res.json())
       .then(res => {console.log(res)}) 
@@ -60,7 +60,7 @@ const getUser = () => {
         "auth-token": localStorage.getItem('auth-token')
       }
     }
-    fetch(`${baseURL}user/profile`, 
+    fetch(`http://localhost:4000/api/user/profile`, 
     requestOptions)
       .then(res => res.json())
       .then(data => {
